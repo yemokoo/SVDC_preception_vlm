@@ -2,8 +2,31 @@
 
 VLM-based driving-scene analysis project with two execution modes:
 
-- Local webcam debug mode
-- ROS 2 camera subscriber mode using `/camera/image_raw`
+- usb_cam-based webcam debug mode using `/image/image_raw`
+- ROS 2 camera subscriber mode using `/image/image_raw`
+
+## ROS 2 package layout
+
+The repository now follows a ROS 2 Python package layout:
+
+```text
+SVDC_preception_vlm/
+├── package.xml
+├── resource/
+│   └── svdc_preception_vlm
+├── setup.py
+├── setup.cfg
+├── svdc_preception_vlm/
+│   ├── __init__.py
+│   ├── vlm_driving_common.py
+│   ├── test_with_webcam.py
+│   └── test_with_ros_camera.py
+├── test_with_webcam.py
+├── test_with_ros_camera.py
+└── README.md
+```
+
+The top-level `test_with_webcam.py` and `test_with_ros_camera.py` files are kept as thin wrappers for convenience.
 
 ## Install
 
@@ -39,7 +62,15 @@ conda activate svdc-vlm
 
 ## Run
 
-### Local webcam debug
+### Local webcam debug through usb_cam
+
+First start the usb camera publisher:
+
+```powershell
+ros2 run usb_cam usb_cam_node_exe
+```
+
+Then run the VLM debug node:
 
 ```powershell
 svdc-webcam
@@ -51,9 +82,15 @@ or
 python test_with_webcam.py
 ```
 
+If you build this as a ROS 2 package, you can also run:
+
+```powershell
+ros2 run svdc_preception_vlm webcam_node
+```
+
 ### ROS 2 camera subscriber
 
-This mode subscribes to `/camera/image_raw` and publishes driving decisions to `/svdc/driving_decision`.
+This mode subscribes to `/image/image_raw` and publishes driving decisions to `/svdc/driving_decision`.
 
 ```powershell
 svdc-ros-camera
@@ -63,6 +100,12 @@ or
 
 ```powershell
 python test_with_ros_camera.py
+```
+
+If you build this as a ROS 2 package, you can also run:
+
+```powershell
+ros2 run svdc_preception_vlm ros_camera_node
 ```
 
 ## ROS topic map
@@ -97,10 +140,10 @@ The published message is a JSON string like this:
 
 ### Input topic
 
-Only the ROS camera mode subscribes to:
+Both execution modes subscribe to the usb_cam image topic:
 
 ```text
-/camera/image_raw
+/image/image_raw
 ```
 
 Message type:
@@ -111,8 +154,8 @@ sensor_msgs/msg/Image
 
 ### Mode summary
 
-- `svdc-webcam`: uses the local webcam directly and publishes results to `/svdc/driving_decision`
-- `svdc-ros-camera`: subscribes to `/camera/image_raw` and publishes results to `/svdc/driving_decision`
+- `svdc-webcam`: subscribes to `/image/image_raw` from `usb_cam` and publishes results to `/svdc/driving_decision`
+- `svdc-ros-camera`: subscribes to `/image/image_raw` and publishes results to `/svdc/driving_decision`
 
 ## ROS 2 note
 
