@@ -1,0 +1,982 @@
+[
+  {
+    "image_id": "6c6c21246e5249edb225218c1e0cd1ce",
+    "scene_token": "a499ee875da34e2b9655afb999edb8a9",
+    "frame_token": "6c6c21246e5249edb225218c1e0cd1ce",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201735912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,113.3,469.2>? Why"
+  },
+  {
+    "image_id": "9288108d128d4579a54fb135d08b46ad",
+    "scene_token": "c3ab8ee2c1a54068a72d7eb4cf22e43d",
+    "frame_token": "9288108d128d4579a54fb135d08b46ad",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281457912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,823.3,556.7>? Why "
+  },
+  {
+    "image_id": "5ab01f7610a24878894087740852f716",
+    "scene_token": "3b2ee26cb8484f77895bc336663df502",
+    "frame_token": "5ab01f7610a24878894087740852f716",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151731412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,985.8,516.7>? Why"
+  },
+  {
+    "image_id": "c6b4dc34a13b4049852f948482a6a6a0",
+    "scene_token": "0e7ede02718341558414865d5c604745",
+    "frame_token": "c6b4dc34a13b4049852f948482a6a6a0",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730416012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1083.3,414.2>? Wh"
+  },
+  {
+    "image_id": "86287c78bf494502ae0b6110c162b63d",
+    "scene_token": "8180a1dbbba3479bb0c7f4ff6e9a3f0e",
+    "frame_token": "86287c78bf494502ae0b6110c162b63d",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281614762460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,488.3,576.7"
+  },
+  {
+    "image_id": "84547c06871449cdb7b3ee025b4d79e8",
+    "scene_token": "d29527ec841045d18d04a933e7a0afd2",
+    "frame_token": "84547c06871449cdb7b3ee025b4d79e8",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799631112460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,1079.2,652."
+  },
+  {
+    "image_id": "43b92f490cb64c2f98f0534678db42a2",
+    "scene_token": "afbc2583cc324938b2e8931d42c83e6b",
+    "frame_token": "43b92f490cb64c2f98f0534678db42a2",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799569862460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,876.7,513.3>? Why"
+  },
+  {
+    "image_id": "6711467d3a2146c0a90f6a69787d8648",
+    "scene_token": "91c071bcc1ad4fa1b555399e1cfbab79",
+    "frame_token": "6711467d3a2146c0a90f6a69787d8648",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151219412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,703.3,497.5>? Why"
+  },
+  {
+    "image_id": "b7df21a953a2477ab5ec0c37e7d21128",
+    "scene_token": "0e7ede02718341558414865d5c604745",
+    "frame_token": "b7df21a953a2477ab5ec0c37e7d21128",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730409412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,810.0,532.5"
+  },
+  {
+    "image_id": "291d30843273487c96a7dc86f79a030f",
+    "scene_token": "9709626638f5406f9f773348150d02fd",
+    "frame_token": "291d30843273487c96a7dc86f79a030f",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281851412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,857.5,540.8>? Why "
+  },
+  {
+    "image_id": "61d47d1198184bfdaa6777e9448d825d",
+    "scene_token": "c5224b9b454b4ded9b5d2d2634bbda8a",
+    "frame_token": "61d47d1198184bfdaa6777e9448d825d",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448755512460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,650.0,558.3>? Why "
+  },
+  {
+    "image_id": "70b0647a7b174b429f077dfeac62128f",
+    "scene_token": "0e7ede02718341558414865d5c604745",
+    "frame_token": "70b0647a7b174b429f077dfeac62128f",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730417412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1047.5,469.2>? Wh"
+  },
+  {
+    "image_id": "53123cc5c36d44e4be7bd5cfd7e118a8",
+    "scene_token": "82cabcf15a1a48aca6bbf082f8710e39",
+    "frame_token": "53123cc5c36d44e4be7bd5cfd7e118a8",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799714412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1081.7,601.7>? Wh"
+  },
+  {
+    "image_id": "1a2db86db8fb409abc7e26578b966d6e",
+    "scene_token": "f5b29a1e09d04355adcd60ab72de006b",
+    "frame_token": "1a2db86db8fb409abc7e26578b966d6e",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296214662404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,1160.8,553.3"
+  },
+  {
+    "image_id": "5d413e8d6a4648a7bcb091f7e362a3fe",
+    "scene_token": "848ac962547c4508b8f3b0fcc8d53270",
+    "frame_token": "5d413e8d6a4648a7bcb091f7e362a3fe",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281931162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,522.5,576.7>"
+  },
+  {
+    "image_id": "882b922af4c740b8be9db39b2cdd1861",
+    "scene_token": "201b7c65a61f4bc1a2333ea90ba9a932",
+    "frame_token": "882b922af4c740b8be9db39b2cdd1861",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281919662460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,139.1,521.7>? Why"
+  },
+  {
+    "image_id": "946040cd49c64a8f9e58d32175b9936f",
+    "scene_token": "d87ec0461e3f4c4ea29b0f0c0ede5167",
+    "frame_token": "946040cd49c64a8f9e58d32175b9936f",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151885012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,1185.0,613."
+  },
+  {
+    "image_id": "55318b9eaf1c4633aff259d87b1bd334",
+    "scene_token": "d87ec0461e3f4c4ea29b0f0c0ede5167",
+    "frame_token": "55318b9eaf1c4633aff259d87b1bd334",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151892912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,612.5,490.6>? Why "
+  },
+  {
+    "image_id": "d07db190a3c14383b739d298818570e6",
+    "scene_token": "d3b86ca0a17840109e9e049b3dd40037",
+    "frame_token": "d07db190a3c14383b739d298818570e6",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537297966762404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,933.3,562.5>"
+  },
+  {
+    "image_id": "f3730479b67b4a3db407852deafe0c0e",
+    "scene_token": "96e5f1f0944946f391b4ef33ad623008",
+    "frame_token": "f3730479b67b4a3db407852deafe0c0e",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657651012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,837.5,665.8>? Why "
+  },
+  {
+    "image_id": "03f6a362b0774343b475ec45be465a87",
+    "scene_token": "fb73d1a6c16147ee9416faf6b310fadb",
+    "frame_token": "03f6a362b0774343b475ec45be465a87",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151852512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,870.0,487.5>? Why"
+  },
+  {
+    "image_id": "28ce972b986d4dbb86ad9c96b3e4e34f",
+    "scene_token": "40209c4e465d4b4e8341ebd52be0d842",
+    "frame_token": "28ce972b986d4dbb86ad9c96b3e4e34f",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657847862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,560.0,495.2>? Why"
+  },
+  {
+    "image_id": "e991851a80d849f082070405128a942f",
+    "scene_token": "b94fbf78579f4ff5ab5dbd897d5e3199",
+    "frame_token": "e991851a80d849f082070405128a942f",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535729917412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,953.3,577.5>? Why"
+  },
+  {
+    "image_id": "d21cfbfa6fd64323a6880d66a4452020",
+    "scene_token": "3b2ee26cb8484f77895bc336663df502",
+    "frame_token": "d21cfbfa6fd64323a6880d66a4452020",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151748912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,538.3,587.5"
+  },
+  {
+    "image_id": "261e4db3a18c4c23944f61bd6e51cf0c",
+    "scene_token": "265f002f02d447ad9074813292eef75e",
+    "frame_token": "261e4db3a18c4c23944f61bd6e51cf0c",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885326412466.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,161.7,599.2>? Why"
+  },
+  {
+    "image_id": "f644a6fcf700456db690440944fbe3d2",
+    "scene_token": "2ed0fcbfc214478ca3b3ce013e7723ba",
+    "frame_token": "f644a6fcf700456db690440944fbe3d2",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151692112404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,159.7,573.3>? Why"
+  },
+  {
+    "image_id": "bceab9713c1f465086a7449e4d91ca4d",
+    "scene_token": "6776b91389394ff18e57b269863b4dbf",
+    "frame_token": "bceab9713c1f465086a7449e4d91ca4d",
+    "local_image_path": "images/n015-2018-09-25-13-17-43+0800__CAM_FRONT__1537852900162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1047.5,515.8>? Wh"
+  },
+  {
+    "image_id": "8d31a51ac68a47369e16121d87a4542a",
+    "scene_token": "4bb9626f13184da7a67ba1b241c19558",
+    "frame_token": "8d31a51ac68a47369e16121d87a4542a",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657707862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,834.2,666.7>? Why "
+  },
+  {
+    "image_id": "b0f8d0ae84a74610bf1c72a8d4bec1a8",
+    "scene_token": "6a24a80e2ea3493c81f5fdb9fe78c28a",
+    "frame_token": "b0f8d0ae84a74610bf1c72a8d4bec1a8",
+    "local_image_path": "images/n008-2018-08-30-10-33-52-0400__CAM_FRONT__1535639749163190.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,971.7,563.3>? Why "
+  },
+  {
+    "image_id": "7bebe3c9be714f02837f8617c56df122",
+    "scene_token": "325cef682f064c55a255f2625c533b75",
+    "frame_token": "7bebe3c9be714f02837f8617c56df122",
+    "local_image_path": "images/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984246912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,1585.0,545.8"
+  },
+  {
+    "image_id": "28285c367b2d468f850572ddcc7efac9",
+    "scene_token": "201b7c65a61f4bc1a2333ea90ba9a932",
+    "frame_token": "28285c367b2d468f850572ddcc7efac9",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281923662460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,839.2,541.7>? Why "
+  },
+  {
+    "image_id": "c880188955834ebaa53cc8bc887327d8",
+    "scene_token": "afbc2583cc324938b2e8931d42c83e6b",
+    "frame_token": "c880188955834ebaa53cc8bc887327d8",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799567912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,517.5,540.0>? Why"
+  },
+  {
+    "image_id": "b9d7fcc30e964b7ba11099fa06d7f8bf",
+    "scene_token": "e8834785d9ff4783a5950281a4579943",
+    "frame_token": "b9d7fcc30e964b7ba11099fa06d7f8bf",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799620162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,820.8,584.2>? Why "
+  },
+  {
+    "image_id": "d5cb5a4a5e5245f8b6300ba482babbc2",
+    "scene_token": "848ac962547c4508b8f3b0fcc8d53270",
+    "frame_token": "d5cb5a4a5e5245f8b6300ba482babbc2",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281939612460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1570.8,551.7>? Wh"
+  },
+  {
+    "image_id": "ca924333b0ad4839952a5b6ab70de4b0",
+    "scene_token": "080a52cb8f59489b9cddc7b721808088",
+    "frame_token": "ca924333b0ad4839952a5b6ab70de4b0",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281645162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,892.5,536.7>? Why "
+  },
+  {
+    "image_id": "4de7963785f34de7afb9e5aae3ce6f9f",
+    "scene_token": "41fde20fedcd4d22ab26811688612870",
+    "frame_token": "4de7963785f34de7afb9e5aae3ce6f9f",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885341012469.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,707.5,472.5>? Why"
+  },
+  {
+    "image_id": "dc8b6fde54a44147ade01e65717fb189",
+    "scene_token": "6741d407b1b44511853e5ec7aaee2992",
+    "frame_token": "dc8b6fde54a44147ade01e65717fb189",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448885162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,820.0,505.0>? Why"
+  },
+  {
+    "image_id": "2ab5a11c73a946f0ac511d3f7ea1d69c",
+    "scene_token": "aacd6706a091407fb1b0e5343d27da7e",
+    "frame_token": "2ab5a11c73a946f0ac511d3f7ea1d69c",
+    "local_image_path": "images/n015-2018-09-25-13-17-43+0800__CAM_FRONT__1537852975162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,840.8,516.7>? Why"
+  },
+  {
+    "image_id": "a1289b27ca1d41deb6fc982be9a3d03c",
+    "scene_token": "325cef682f064c55a255f2625c533b75",
+    "frame_token": "a1289b27ca1d41deb6fc982be9a3d03c",
+    "local_image_path": "images/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984250912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_RIGHT,778.3,678.3>"
+  },
+  {
+    "image_id": "5c7520cf0a4e4162909f2103b83f66b5",
+    "scene_token": "16be583c31a2403caa6c158bb55ae616",
+    "frame_token": "5c7520cf0a4e4162909f2103b83f66b5",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799583862460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1217.5,547.5>? Wh"
+  },
+  {
+    "image_id": "11514e9bc4184a1f8bcdc1fe7aafad2d",
+    "scene_token": "cba3ddd5c3664a43b6a08e586e094900",
+    "frame_token": "11514e9bc4184a1f8bcdc1fe7aafad2d",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151198512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,141.7,442.5"
+  },
+  {
+    "image_id": "01bbf47bcb1c44ab8ae4fedd8a0e0520",
+    "scene_token": "bed67ef03c4a4066a74f6c0117d512ee",
+    "frame_token": "01bbf47bcb1c44ab8ae4fedd8a0e0520",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151714362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,982.5,480.8>? Why"
+  },
+  {
+    "image_id": "d0e49a3a29814c37a2d1c8c1b946653c",
+    "scene_token": "26a6b03c8e2f4e6692f174a7074e54ff",
+    "frame_token": "d0e49a3a29814c37a2d1c8c1b946653c",
+    "local_image_path": "images/n008-2018-08-30-10-33-52-0400__CAM_FRONT__1535639668512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,749.2,490.8>? Why"
+  },
+  {
+    "image_id": "50f3aba515db47d6b0dc9061802ef7b2",
+    "scene_token": "952cb0bcd89b4ca4b904cdcbbf595523",
+    "frame_token": "50f3aba515db47d6b0dc9061802ef7b2",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730328262404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,589.2,555.0>"
+  },
+  {
+    "image_id": "6df66081e5764cea846062a514fd90d5",
+    "scene_token": "3045ed93c2534ec2a5cabea89b186bd9",
+    "frame_token": "6df66081e5764cea846062a514fd90d5",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296190912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,874.5,480.9>? Why"
+  },
+  {
+    "image_id": "84ba798eaddf49b0b00b8eb1a64ed7fc",
+    "scene_token": "d3b86ca0a17840109e9e049b3dd40037",
+    "frame_token": "84ba798eaddf49b0b00b8eb1a64ed7fc",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537297975162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1461.7,550.8>? Wh"
+  },
+  {
+    "image_id": "9a12dd1281234caaafb32edfe77254e1",
+    "scene_token": "e6f1a7e6218a4737bfedc6af90926b3e",
+    "frame_token": "9a12dd1281234caaafb32edfe77254e1",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799434412471.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1084.2,500.8>? Wh"
+  },
+  {
+    "image_id": "7b812b168d934f5a9011ac107bff941d",
+    "scene_token": "d3b86ca0a17840109e9e049b3dd40037",
+    "frame_token": "7b812b168d934f5a9011ac107bff941d",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537297976162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,942.2,658.2"
+  },
+  {
+    "image_id": "58cf35a1ae754c1fa5204699f477f15e",
+    "scene_token": "6af9b75e439e4811ad3b04dc2220657a",
+    "frame_token": "58cf35a1ae754c1fa5204699f477f15e",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799496162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,857.5,452.5>? Why"
+  },
+  {
+    "image_id": "7ac3bb7fba5c4852a685555407cd10f1",
+    "scene_token": "efa5c96f05594f41a2498eb9f2e7ad99",
+    "frame_token": "7ac3bb7fba5c4852a685555407cd10f1",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885617912743.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,497.5,529.2>? Why "
+  },
+  {
+    "image_id": "bdcb762d6df842358056925b1143e961",
+    "scene_token": "afd73f70ff7d46d6b772d341c08e31a5",
+    "frame_token": "bdcb762d6df842358056925b1143e961",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151480112404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,192.8,460.2"
+  },
+  {
+    "image_id": "db32a1f21a8b49989746a09ceab49905",
+    "scene_token": "3927699fa562451a98bb13bf8405361d",
+    "frame_token": "db32a1f21a8b49989746a09ceab49905",
+    "local_image_path": "images/n008-2018-08-22-15-53-49-0400__CAM_FRONT__1534967936862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,58.3,482.5>? Why "
+  },
+  {
+    "image_id": "8b830239436f46d3b0b90de4cc4c0546",
+    "scene_token": "21a7ba093614493b83838b9656b3558d",
+    "frame_token": "8b830239436f46d3b0b90de4cc4c0546",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657576412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,500.8,484.2>? Why"
+  },
+  {
+    "image_id": "4966d957c9ab4bbc837ecbf6fb019631",
+    "scene_token": "f24b4682fbb9482aba149534deed1cc9",
+    "frame_token": "4966d957c9ab4bbc837ecbf6fb019631",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448772662466.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,872.2,503.3>? Why"
+  },
+  {
+    "image_id": "c2319982083b41dbaa42a640f55961f5",
+    "scene_token": "54f56f80350b4c07af598ee87cf3886a",
+    "frame_token": "c2319982083b41dbaa42a640f55961f5",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730673362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,821.7,378.3>? Why"
+  },
+  {
+    "image_id": "753f633399d2419188871d3f0d145b54",
+    "scene_token": "7e8ff24069ff4023ac699669b2c920de",
+    "frame_token": "753f633399d2419188871d3f0d145b54",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298057412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,855.8,515.8>? Why"
+  },
+  {
+    "image_id": "1a776100d0974c0b9edc9bb80a842b54",
+    "scene_token": "e6f1a7e6218a4737bfedc6af90926b3e",
+    "frame_token": "1a776100d0974c0b9edc9bb80a842b54",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799436912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1380.0,605.0>? Wh"
+  },
+  {
+    "image_id": "907c55da60624b3ab19750af975b96a8",
+    "scene_token": "d1e57234fd6a463d963670938f9f556e",
+    "frame_token": "907c55da60624b3ab19750af975b96a8",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885406262460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1064.2,477.5>? Wh"
+  },
+  {
+    "image_id": "8d1c7b2b85fe4befb66efe9e05e0d939",
+    "scene_token": "5af9c7f124d84e7e9ac729fafa40ea01",
+    "frame_token": "8d1c7b2b85fe4befb66efe9e05e0d939",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151435112404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,890.8,539.2>? Why "
+  },
+  {
+    "image_id": "f935a403f62f4bd790e3f6e082b8141a",
+    "scene_token": "a2b005c4dd654af48194ada18662c8ca",
+    "frame_token": "f935a403f62f4bd790e3f6e082b8141a",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298222012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,696.7,492.5>? Why"
+  },
+  {
+    "image_id": "f8b5e98950ed483e92ece29c264c072e",
+    "scene_token": "b51869782c0e464b8021eb798609f35f",
+    "frame_token": "f8b5e98950ed483e92ece29c264c072e",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885805412868.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_RIGHT,890.8,450.9>"
+  },
+  {
+    "image_id": "51d189d9418447ceb7ab637a9b7a0779",
+    "scene_token": "a7d073bc435b4356a0a9a5ebfb61f229",
+    "frame_token": "51d189d9418447ceb7ab637a9b7a0779",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298078112404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1083.8,515.8>? Wh"
+  },
+  {
+    "image_id": "2ee8eafc070e45679c9c4cf8a695aeb7",
+    "scene_token": "6af9b75e439e4811ad3b04dc2220657a",
+    "frame_token": "2ee8eafc070e45679c9c4cf8a695aeb7",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799483612460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,970.0,550.0>? Why "
+  },
+  {
+    "image_id": "03c4ae55f4f747ea89deb0834aa0a125",
+    "scene_token": "91f797db8fb34ae5b32ba85eecae47c9",
+    "frame_token": "03c4ae55f4f747ea89deb0834aa0a125",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281974662460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,835.8,518.3>? Why "
+  },
+  {
+    "image_id": "99df68e72fe14d91b11c4ba652c55214",
+    "scene_token": "01e4fcbe6e49483293ce45727152b36e",
+    "frame_token": "99df68e72fe14d91b11c4ba652c55214",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298020662404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,840.0,695.0>? Why "
+  },
+  {
+    "image_id": "fdd2da37faa44428ba9ce4a760f53276",
+    "scene_token": "5a0dd8908a3a459b83ec5eb6ac7d0f82",
+    "frame_token": "fdd2da37faa44428ba9ce4a760f53276",
+    "local_image_path": "images/n015-2018-07-24-10-42-41+0800__CAM_FRONT__1532400244162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1080.8,475.0>? Wh"
+  },
+  {
+    "image_id": "0adea7e136624021ba81b30a63976bd4",
+    "scene_token": "57dc3221a3d845b5ab17ff0f98ce336f",
+    "frame_token": "0adea7e136624021ba81b30a63976bd4",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657810512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,82.5,672.6>"
+  },
+  {
+    "image_id": "7a8272865e4b4337a4b10a283f2fb0d9",
+    "scene_token": "21a7ba093614493b83838b9656b3558d",
+    "frame_token": "7a8272865e4b4337a4b10a283f2fb0d9",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657580912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,446.7,489.2>? Why"
+  },
+  {
+    "image_id": "376e84a454c149288f65ab76b8d970ad",
+    "scene_token": "f2541977a00a448db9b46a32187d9059",
+    "frame_token": "376e84a454c149288f65ab76b8d970ad",
+    "local_image_path": "images/n008-2018-08-28-16-43-51-0400__CAM_FRONT__1535489328412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,526.5,751.6>"
+  },
+  {
+    "image_id": "99c398fcde5b4a2091b1a58b94ca1b5e",
+    "scene_token": "9088db17416043e5880a53178bfa461c",
+    "frame_token": "99c398fcde5b4a2091b1a58b94ca1b5e",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296054412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,235.8,453.3>? Why"
+  },
+  {
+    "image_id": "ecb7bc8b12064ecd8a7e958c7172d46a",
+    "scene_token": "a2b005c4dd654af48194ada18662c8ca",
+    "frame_token": "ecb7bc8b12064ecd8a7e958c7172d46a",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298208612404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,824.2,502.5>? Why"
+  },
+  {
+    "image_id": "7282c260eb3440539424668687a82648",
+    "scene_token": "d1e57234fd6a463d963670938f9f556e",
+    "frame_token": "7282c260eb3440539424668687a82648",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885400912464.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,830.7,417.5>? Why"
+  },
+  {
+    "image_id": "42752758fe0a460e8eb8ec6e16de0ba3",
+    "scene_token": "c164a8e8e8b8489f964f711f472789be",
+    "frame_token": "42752758fe0a460e8eb8ec6e16de0ba3",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537297947162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,572.5,595.0>"
+  },
+  {
+    "image_id": "3ad79c1436ab441795d4d73ae0b503d5",
+    "scene_token": "7bd098ac88cb4221addd19202a7ea5de",
+    "frame_token": "3ad79c1436ab441795d4d73ae0b503d5",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296085412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,991.7,481.7>? Why"
+  },
+  {
+    "image_id": "6482944ffc7a4e07b6028c5797a41606",
+    "scene_token": "813213458a214a39a1d1fc77fa52fa34",
+    "frame_token": "6482944ffc7a4e07b6028c5797a41606",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885418012463.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,1370.8,507.5"
+  },
+  {
+    "image_id": "e174cb43655f49dab7ffa27b973670e3",
+    "scene_token": "325cef682f064c55a255f2625c533b75",
+    "frame_token": "e174cb43655f49dab7ffa27b973670e3",
+    "local_image_path": "images/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984242912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,971.9,631.8>"
+  },
+  {
+    "image_id": "afd9d700ec144dc3b646bec39362c710",
+    "scene_token": "84e056bd8e994362a37cba45c0f75558",
+    "frame_token": "afd9d700ec144dc3b646bec39362c710",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730639012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,844.0,406.7>? Why"
+  },
+  {
+    "image_id": "d05a95e0449b48b1a964849f3d7849f4",
+    "scene_token": "a499ee875da34e2b9655afb999edb8a9",
+    "frame_token": "d05a95e0449b48b1a964849f3d7849f4",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201732012460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,896.7,576.7"
+  },
+  {
+    "image_id": "c282419dd0d94aefab995f18ff0e179d",
+    "scene_token": "034dee1695304630b0692da8c1f153fc",
+    "frame_token": "c282419dd0d94aefab995f18ff0e179d",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799335162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,441.7,520.0>? Why "
+  },
+  {
+    "image_id": "a295a63b9748438399bde0551aea5da9",
+    "scene_token": "a178a1b5415f45c08d179bd2cacdf284",
+    "frame_token": "a295a63b9748438399bde0551aea5da9",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151843912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,968.3,594.2>"
+  },
+  {
+    "image_id": "d1d66d7d6a3043b380cc10f7ccee4ca6",
+    "scene_token": "3f90afe9f7dc49399347ae1626502aed",
+    "frame_token": "d1d66d7d6a3043b380cc10f7ccee4ca6",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730287412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,816.7,519.2>? Why "
+  },
+  {
+    "image_id": "f0f7fec4524045f4a2f44866d410ec84",
+    "scene_token": "3ada261efee347cba2e7557794f1aec8",
+    "frame_token": "f0f7fec4524045f4a2f44866d410ec84",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295842412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_LEFT,1183.3,601.7>"
+  },
+  {
+    "image_id": "cd6b4f5eb88a4f7590c29d744dbd6cd0",
+    "scene_token": "26a6b03c8e2f4e6692f174a7074e54ff",
+    "frame_token": "cd6b4f5eb88a4f7590c29d744dbd6cd0",
+    "local_image_path": "images/n008-2018-08-30-10-33-52-0400__CAM_FRONT__1535639658662556.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,210.0,535.0>? Why "
+  },
+  {
+    "image_id": "4e8b7b2f5e7c490ca034de21c248e90a",
+    "scene_token": "55b3a17359014f398b6bbd90e94a8e1b",
+    "frame_token": "4e8b7b2f5e7c490ca034de21c248e90a",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298172162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,643.3,500.8>"
+  },
+  {
+    "image_id": "453118c5050748d3939e45666ff915f3",
+    "scene_token": "0ac05652a4c44374998be876ba5cd6fd",
+    "frame_token": "453118c5050748d3939e45666ff915f3",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295827412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,735.8,552.5>"
+  },
+  {
+    "image_id": "4f0f533c84c4493599f2eb3a60882b16",
+    "scene_token": "7365495b74464629813b41eacdb711af",
+    "frame_token": "4f0f533c84c4493599f2eb3a60882b16",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151062512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_LEFT,824.2,613.3>?"
+  },
+  {
+    "image_id": "3c39b000dc2d42338f2a4567f65b2ae7",
+    "scene_token": "4bb9626f13184da7a67ba1b241c19558",
+    "frame_token": "3c39b000dc2d42338f2a4567f65b2ae7",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657697412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_LEFT,1064.0,674.2>"
+  },
+  {
+    "image_id": "9dad24d222564abc92d4af77980cb842",
+    "scene_token": "57dc3221a3d845b5ab17ff0f98ce336f",
+    "frame_token": "9dad24d222564abc92d4af77980cb842",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657807012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,75.0,685.7>"
+  },
+  {
+    "image_id": "4404961302234ce8ad5fddbd17fbcc04",
+    "scene_token": "afd73f70ff7d46d6b772d341c08e31a5",
+    "frame_token": "4404961302234ce8ad5fddbd17fbcc04",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151488512404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,252.1,481.2"
+  },
+  {
+    "image_id": "2f3e07dddeb9482ea9994adbd1049e7a",
+    "scene_token": "dce6f3f2bf6b4859abcf3268581969d3",
+    "frame_token": "2f3e07dddeb9482ea9994adbd1049e7a",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537297989262404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,845.8,491.7>? Why"
+  },
+  {
+    "image_id": "21b8e71e403442a480abb038c491e70d",
+    "scene_token": "4efbf4c0b77f467385fc2e19da45c989",
+    "frame_token": "21b8e71e403442a480abb038c491e70d",
+    "local_image_path": "images/n015-2018-09-25-13-17-43+0800__CAM_FRONT__1537852793112460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,792.5,500.0>? Why"
+  },
+  {
+    "image_id": "c7fee57d96304d868dc8a2b187295c0b",
+    "scene_token": "54f56f80350b4c07af598ee87cf3886a",
+    "frame_token": "c7fee57d96304d868dc8a2b187295c0b",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730666362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1073.3,506.7>? Wh"
+  },
+  {
+    "image_id": "5bebe37b75564ab2a9773b12e78917e1",
+    "scene_token": "3045ed93c2534ec2a5cabea89b186bd9",
+    "frame_token": "5bebe37b75564ab2a9773b12e78917e1",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296188362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,875.8,478.3>? Why"
+  },
+  {
+    "image_id": "1a9c83c482c84c9e874e21aab1820190",
+    "scene_token": "a178a1b5415f45c08d179bd2cacdf284",
+    "frame_token": "1a9c83c482c84c9e874e21aab1820190",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151836662404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,1348.3,555.0"
+  },
+  {
+    "image_id": "947147c686d04c168ee8604b2f43bd46",
+    "scene_token": "c65c4acf86954f8cbd53a3541a3bfa3a",
+    "frame_token": "947147c686d04c168ee8604b2f43bd46",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151367912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,738.3,505.8>? Why"
+  },
+  {
+    "image_id": "6b9a36508b994d95927d7b2af790db05",
+    "scene_token": "e6f1a7e6218a4737bfedc6af90926b3e",
+    "frame_token": "6b9a36508b994d95927d7b2af790db05",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799424112460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,550.0,600.8"
+  },
+  {
+    "image_id": "656ec137f292487fb7685d39dc162b03",
+    "scene_token": "0ac05652a4c44374998be876ba5cd6fd",
+    "frame_token": "656ec137f292487fb7685d39dc162b03",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295820862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,387.5,575.8>"
+  },
+  {
+    "image_id": "08beb6614eef4f7cbc320082a06d725d",
+    "scene_token": "a499ee875da34e2b9655afb999edb8a9",
+    "frame_token": "08beb6614eef4f7cbc320082a06d725d",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201743912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_LEFT,1105.0,531.7"
+  },
+  {
+    "image_id": "5bdc6f6d074b4749a5dae9ed57f0eba7",
+    "scene_token": "c92fdd793fbb4401b12782a9b8d4a499",
+    "frame_token": "5bdc6f6d074b4749a5dae9ed57f0eba7",
+    "local_image_path": "images/n015-2018-09-25-13-17-43+0800__CAM_FRONT__1537852860162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,757.5,512.5>? Why "
+  },
+  {
+    "image_id": "4200ee42070b4614a74d9621d926e248",
+    "scene_token": "96e5f1f0944946f391b4ef33ad623008",
+    "frame_token": "4200ee42070b4614a74d9621d926e248",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657652412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,837.5,665.8>? Why "
+  },
+  {
+    "image_id": "317fba7a6afb4dac8974af0d61afe325",
+    "scene_token": "21a7ba093614493b83838b9656b3558d",
+    "frame_token": "317fba7a6afb4dac8974af0d61afe325",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657570412404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,553.3,478.3>? Why"
+  },
+  {
+    "image_id": "0f512a2cf5e24a84bb7a13774295ece8",
+    "scene_token": "c525507ee2ef4c6d8bb64b0e0cf0dd32",
+    "frame_token": "0f512a2cf5e24a84bb7a13774295ece8",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151673662404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,877.5,541.7>? Why"
+  },
+  {
+    "image_id": "2ff0482416cb4997bab12b0d7700f142",
+    "scene_token": "2086743226764f268fe8d4b0b7c19590",
+    "frame_token": "2ff0482416cb4997bab12b0d7700f142",
+    "local_image_path": "images/n015-2018-09-25-13-17-43+0800__CAM_FRONT__1537852756612460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,475.0,585.8>? Why "
+  },
+  {
+    "image_id": "649a61c361bf48d98b5f280cc10aa006",
+    "scene_token": "991d65cab952449a821deb32e971ff19",
+    "frame_token": "649a61c361bf48d98b5f280cc10aa006",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295927362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,292.5,503.3>? Why"
+  },
+  {
+    "image_id": "b22ec0c7883143c6a201e71ab917da7a",
+    "scene_token": "201b7c65a61f4bc1a2333ea90ba9a932",
+    "frame_token": "b22ec0c7883143c6a201e71ab917da7a",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281908262460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,965.8,542.5>? Why"
+  },
+  {
+    "image_id": "a19a80c905674faab7203a3a4e0f5246",
+    "scene_token": "325cef682f064c55a255f2625c533b75",
+    "frame_token": "a19a80c905674faab7203a3a4e0f5246",
+    "local_image_path": "images/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984241412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,1210.9,719."
+  },
+  {
+    "image_id": "5aca10a9fd0249e2a1604aa1ab8904d9",
+    "scene_token": "85651af9c04945c3a394cf845cb480a6",
+    "frame_token": "5aca10a9fd0249e2a1604aa1ab8904d9",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298094162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,851.7,493.3>? Why"
+  },
+  {
+    "image_id": "626c2ccc5e2349f8869d3b48c2256886",
+    "scene_token": "50ff554b3ecb4d208849d042b7643715",
+    "frame_token": "626c2ccc5e2349f8869d3b48c2256886",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657856012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_RIGHT,1135.0,670.8"
+  },
+  {
+    "image_id": "b966442a32c24683829cb74c30e6e21d",
+    "scene_token": "7365495b74464629813b41eacdb711af",
+    "frame_token": "b966442a32c24683829cb74c30e6e21d",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151079762404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,1173.3,468.3>? Why"
+  },
+  {
+    "image_id": "edc5f9bd039342cb9403a18d2cee773d",
+    "scene_token": "8edbc31083ab4fb187626e5b3c0411f7",
+    "frame_token": "edc5f9bd039342cb9403a18d2cee773d",
+    "local_image_path": "images/n015-2018-07-24-10-42-41+0800__CAM_FRONT__1532400523612460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,848.3,495.0>? Why "
+  },
+  {
+    "image_id": "b3bafb1ec0824002ac518570c7995935",
+    "scene_token": "8377abf77f464a9cb62eacf63f383422",
+    "frame_token": "b3bafb1ec0824002ac518570c7995935",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281874162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,797.5,727.4"
+  },
+  {
+    "image_id": "baf74406530343b3938586c496916614",
+    "scene_token": "e8099a6136804f3bb9b38ff94d98eb64",
+    "frame_token": "baf74406530343b3938586c496916614",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799403012460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,514.2,503.3>? Why "
+  },
+  {
+    "image_id": "b462e73472684c509a3e5f8734c33b10",
+    "scene_token": "91f797db8fb34ae5b32ba85eecae47c9",
+    "frame_token": "b462e73472684c509a3e5f8734c33b10",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281963762460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,894.2,521.7>? Why "
+  },
+  {
+    "image_id": "1f9b04c2eca4497288cf23649ac47b8a",
+    "scene_token": "7061c08f7eec4495979a0cf68ab6bb79",
+    "frame_token": "1f9b04c2eca4497288cf23649ac47b8a",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657819012404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1226.7,555.8>? Wh"
+  },
+  {
+    "image_id": "6742957ced7b491c939169eaccaf3e64",
+    "scene_token": "c4df079d260241ff8015218e29b42ea7",
+    "frame_token": "6742957ced7b491c939169eaccaf3e64",
+    "local_image_path": "images/n015-2018-10-08-15-44-23+0800__CAM_FRONT__1538984961862460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1105.0,477.5>? Wh"
+  },
+  {
+    "image_id": "978470d6c8634b75bbb95b2e3d0cea10",
+    "scene_token": "5301151d8b6a42b0b252e95634bd3995",
+    "frame_token": "978470d6c8634b75bbb95b2e3d0cea10",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295886612404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_LEFT,1051.7,524.2>"
+  },
+  {
+    "image_id": "470df44aab6241f4843137efa2e55b85",
+    "scene_token": "3dd9ad3f963e4f588d75c112cbf07f56",
+    "frame_token": "470df44aab6241f4843137efa2e55b85",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885780912466.jpg",
+    "qa_preview": "[planning] What actions taken by the ego vehicle can lead to a collision with <c1,CAM_FRONT"
+  },
+  {
+    "image_id": "8e891ad68790441bb4ad69218d168db8",
+    "scene_token": "a7d073bc435b4356a0a9a5ebfb61f229",
+    "frame_token": "8e891ad68790441bb4ad69218d168db8",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298080162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,40.0,649.2>"
+  },
+  {
+    "image_id": "6d1abf2d329c483d923683764e9df8b5",
+    "scene_token": "7061c08f7eec4495979a0cf68ab6bb79",
+    "frame_token": "6d1abf2d329c483d923683764e9df8b5",
+    "local_image_path": "images/n008-2018-08-30-15-31-50-0400__CAM_FRONT__1535657812912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,81.5,638.7>"
+  },
+  {
+    "image_id": "e004cf11fde44ad89b1bd79edff64150",
+    "scene_token": "e8834785d9ff4783a5950281a4579943",
+    "frame_token": "e004cf11fde44ad89b1bd79edff64150",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799609112460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,786.7,504.2>? Why "
+  },
+  {
+    "image_id": "6edc535af6e4466d93c99da08c7b6b58",
+    "scene_token": "36f27b26ef4c423c9b79ac984dc33bae",
+    "frame_token": "6edc535af6e4466d93c99da08c7b6b58",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448735612460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,873.3,505.8>? Why"
+  },
+  {
+    "image_id": "34ce6cba0fa543398b4f0f677ace4e17",
+    "scene_token": "ec7b7459461e4da1a236ba23e22377c9",
+    "frame_token": "34ce6cba0fa543398b4f0f677ace4e17",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448842662460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1086.7,490.0>? Wh"
+  },
+  {
+    "image_id": "b485d79c3d6141f989ca7a3f8b6989f3",
+    "scene_token": "7e8ff24069ff4023ac699669b2c920de",
+    "frame_token": "b485d79c3d6141f989ca7a3f8b6989f3",
+    "local_image_path": "images/n008-2018-09-18-15-12-01-0400__CAM_FRONT__1537298048162404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,410.0,500.0>? Why "
+  },
+  {
+    "image_id": "005d3e821c4e4e0ab03f1ea1dcbf9cc8",
+    "scene_token": "fcc020250f884397965ba00c1d9ad9e6",
+    "frame_token": "005d3e821c4e4e0ab03f1ea1dcbf9cc8",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201583412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,1310.4,687.5>? Why"
+  },
+  {
+    "image_id": "204ed03554974215b9345d58b09082f4",
+    "scene_token": "696a45dbd11346b794fdce43fa0a1770",
+    "frame_token": "204ed03554974215b9345d58b09082f4",
+    "local_image_path": "images/n015-2018-10-08-15-44-23+0800__CAM_FRONT__1538984914912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,825.0,512.5>? Why "
+  },
+  {
+    "image_id": "00bb84f140c943059a9a1e8e372ddabe",
+    "scene_token": "ed242d80ccb34b139aaf9ab89859332e",
+    "frame_token": "00bb84f140c943059a9a1e8e372ddabe",
+    "local_image_path": "images/n008-2018-08-31-11-37-23-0400__CAM_FRONT__1535730471862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,977.5,489.2>? Why"
+  },
+  {
+    "image_id": "4b0c2b4afa3940f78d68d5666cf93adc",
+    "scene_token": "f97bf749746c4c3a8ad9f1c11eab6444",
+    "frame_token": "4b0c2b4afa3940f78d68d5666cf93adc",
+    "local_image_path": "images/n015-2018-11-21-19-21-35+0800__CAM_FRONT__1542799528912460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT_RIGHT,898.3,608.3"
+  },
+  {
+    "image_id": "ff9fccde28864e1b8127991feee3301d",
+    "scene_token": "91f797db8fb34ae5b32ba85eecae47c9",
+    "frame_token": "ff9fccde28864e1b8127991feee3301d",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281980262460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,323.3,541.7>? Why "
+  },
+  {
+    "image_id": "d34f2eec80f54b608f9b9d0a86f103bd",
+    "scene_token": "265f002f02d447ad9074813292eef75e",
+    "frame_token": "d34f2eec80f54b608f9b9d0a86f103bd",
+    "local_image_path": "images/n015-2018-07-18-11-41-49+0800__CAM_FRONT__1531885324912466.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,577.5,528.3>? Why"
+  },
+  {
+    "image_id": "6648ade33185426ea5864cdf7e0f028c",
+    "scene_token": "fcc020250f884397965ba00c1d9ad9e6",
+    "frame_token": "6648ade33185426ea5864cdf7e0f028c",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201598012460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,789.2,494.2>? Why"
+  },
+  {
+    "image_id": "4e87276d0d1347a48550a74799631d6a",
+    "scene_token": "9d1307e95c524ca4a51e03087bd57c29",
+    "frame_token": "4e87276d0d1347a48550a74799631d6a",
+    "local_image_path": "images/n008-2018-08-22-15-53-49-0400__CAM_FRONT__1534968031362404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,1292.6,656.0>? Why"
+  },
+  {
+    "image_id": "c10dfcf73ed84179b8915990fa6464a5",
+    "scene_token": "7365495b74464629813b41eacdb711af",
+    "frame_token": "c10dfcf73ed84179b8915990fa6464a5",
+    "local_image_path": "images/n008-2018-08-01-15-16-36-0400__CAM_FRONT__1533151075862404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK_LEFT,399.2,528.3>?"
+  },
+  {
+    "image_id": "c64a7057e90d43eea2b5e844ca7a49b1",
+    "scene_token": "19d97841d6f64eba9f6eb9b6e8c257dc",
+    "frame_token": "c64a7057e90d43eea2b5e844ca7a49b1",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537296125912404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,1009.2,600.8>? Why"
+  },
+  {
+    "image_id": "073394e5ed044800b3e4d7e077716219",
+    "scene_token": "2ca15f59d656489a8b1a0be4d9bead4e",
+    "frame_token": "073394e5ed044800b3e4d7e077716219",
+    "local_image_path": "images/n015-2018-07-11-11-54-16+0800__CAM_FRONT__1531281565162460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,994.2,521.7>? Why"
+  },
+  {
+    "image_id": "5028b52519ad4b57b5f075ecf223f4b9",
+    "scene_token": "c4df079d260241ff8015218e29b42ea7",
+    "frame_token": "5028b52519ad4b57b5f075ecf223f4b9",
+    "local_image_path": "images/n015-2018-10-08-15-44-23+0800__CAM_FRONT__1538984967862460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1243.3,564.2>? Wh"
+  },
+  {
+    "image_id": "fe068539da6b44c0a8ddfcaebf528d8a",
+    "scene_token": "36f27b26ef4c423c9b79ac984dc33bae",
+    "frame_token": "fe068539da6b44c0a8ddfcaebf528d8a",
+    "local_image_path": "images/n015-2018-10-02-10-50-40+0800__CAM_FRONT__1538448742662460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,967.5,486.7>? Why"
+  },
+  {
+    "image_id": "6a32920ad3b44cff8a51f02a65713f58",
+    "scene_token": "696a45dbd11346b794fdce43fa0a1770",
+    "frame_token": "6a32920ad3b44cff8a51f02a65713f58",
+    "local_image_path": "images/n015-2018-10-08-15-44-23+0800__CAM_FRONT__1538984918412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,813.3,540.0>? Why "
+  },
+  {
+    "image_id": "440a528da74b42f19d46b648a3a6eccb",
+    "scene_token": "9068766ee9374872a380fe75fcfb299e",
+    "frame_token": "440a528da74b42f19d46b648a3a6eccb",
+    "local_image_path": "images/n008-2018-09-18-14-35-12-0400__CAM_FRONT__1537295956662404.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_FRONT,1044.2,511.7>? Wh"
+  },
+  {
+    "image_id": "f56a544064a548a39a81f18cc8f633c5",
+    "scene_token": "e7ef871f77f44331aefdebc24ec034b7",
+    "frame_token": "f56a544064a548a39a81f18cc8f633c5",
+    "local_image_path": "images/n015-2018-08-02-17-16-37+0800__CAM_FRONT__1533201472412460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c1,CAM_BACK,1172.8,705.8>? Why"
+  },
+  {
+    "image_id": "188e7d58e565459096ad682313f93902",
+    "scene_token": "955ff42a1990442d868cdfc0c01583d4",
+    "frame_token": "188e7d58e565459096ad682313f93902",
+    "local_image_path": "images/n015-2018-10-08-15-36-50+0800__CAM_FRONT__1538984455012460.jpg",
+    "qa_preview": "[planning] What actions could the ego vehicle take based on <c2,CAM_FRONT_RIGHT,1012.5,500."
+  }
+]

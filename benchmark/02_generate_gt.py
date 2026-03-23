@@ -41,7 +41,7 @@ MODEL_NAME = os.environ.get("VERTEX_GEMINI_MODEL", "gemini-3-flash-preview")
 
 MAX_RETRY = 4
 TEMPERATURE = 0.0        # GT 생성은 deterministic 하게
-MAX_TOKENS = 512
+MAX_TOKENS = 8192        # thinking 모델은 <think> 블록이 길어서 넉넉하게
 SLEEP_BETWEEN_CALLS = 1.0  # API rate limit 방지
 
 BASE_DIR = Path(__file__).resolve().parent
