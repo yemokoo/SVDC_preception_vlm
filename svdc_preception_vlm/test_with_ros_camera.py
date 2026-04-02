@@ -223,7 +223,7 @@ def run_ros_camera_monitor(
 
 
 def main():
-    """Default ROS 2 camera entrypoint using the usb_cam image topic."""
+    """Default ROS 2 camera entrypoint using the ROS raw image topic."""
     run_ros_camera_monitor()
 
 

@@ -2,6 +2,7 @@
 
 import base64
 import json
+import os
 import time
 from io import BytesIO
 
@@ -22,8 +23,8 @@ except ImportError:
     String = None
 
 
-MODEL_NAME = "qwen3vl_8b"
-VLLM_BASE_URL = "http://192.168.0.87:8000"
+MODEL_NAME = os.getenv("SVDC_VLM_MODEL", "qwen3-vl:8b-instruct")
+VLLM_BASE_URL = os.getenv("SVDC_VLM_BASE_URL", "http://192.168.64.1:11434")
 CAPTURE_INTERVAL = 3  # seconds
 ROS_NODE_NAME = "vlm_driving_decision_publisher"
 ROS_TOPIC_NAME = "/svdc/driving_decision"
@@ -105,7 +106,7 @@ def encode_image_to_base64(image: Image.Image) -> str:
 
 
 def query_vllm_server(system_prompt: str, user_text: str, image_base64: str) -> dict:
-    """Send request to the VLM server and return response with timing."""
+    """Send request to the configured OpenAI-compatible VLM server."""
     messages = [
         {
             "role": "system",
@@ -134,6 +135,7 @@ def query_vllm_server(system_prompt: str, user_text: str, image_base64: str) -> 
     response = requests.post(
         f"{VLLM_BASE_URL}/v1/chat/completions",
         json=payload,
+        headers={"Content-Type": "application/json"},
         timeout=120,
     )
     elapsed_time = time.time() - start_time

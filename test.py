@@ -11,8 +11,8 @@ from PIL import Image
 
 
 # Configuration
-MODEL_NAME = "qwen3vl_8b"
-VLLM_BASE_URL = "http://192.168.0.87:8000"
+MODEL_NAME = "qwen3-vl:8b-instruct"
+VLLM_BASE_URL = "http://192.168.64.1:11434"
 BASE_DIR = Path(__file__).resolve().parent
 IMAGE_PATH = BASE_DIR / "roadimg.jpg"
 

@@ -181,8 +181,30 @@ If VS Code is using the same conda interpreter, the integrated terminal may auto
 
 ## Model server
 
-The VLM server is configured as:
+The default OpenAI-compatible VLM server is configured as:
 
 ```text
-http://192.168.0.87:8000
+Endpoint: http://192.168.64.1:11434
+API: http://192.168.64.1:11434/v1/chat/completions
+Model: qwen3-vl:8b-instruct
+Auth: none
+```
+
+The ROS camera node already subscribes to the raw image topic:
+
+```text
+/image/image_raw
+```
+
+You can run it with:
+
+```powershell
+ros2 run svdc_preception_vlm ros_camera_node
+```
+
+Optional overrides:
+
+```powershell
+set SVDC_VLM_BASE_URL=http://192.168.64.1:11434
+set SVDC_VLM_MODEL=qwen3-vl:8b-instruct
 ```
