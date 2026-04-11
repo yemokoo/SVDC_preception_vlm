@@ -18,16 +18,20 @@ except ImportError:
     Node = object
 
 try:
-    from std_msgs.msg import String
+    from std_msgs.msg import Bool, String
 except ImportError:
+    Bool = None
     String = None
 
 
 MODEL_NAME = os.getenv("SVDC_VLM_MODEL", "qwen3-vl:8b-instruct")
 VLLM_BASE_URL = os.getenv("SVDC_VLM_BASE_URL", "http://192.168.64.1:11434")
 CAPTURE_INTERVAL = 3  # seconds
-ROS_NODE_NAME = "vlm_driving_decision_publisher"
-ROS_TOPIC_NAME = "/svdc/driving_decision"
+ROS_NODE_NAME = "vlm_drive_context_publisher"
+ROS_TOPIC_NAME = "/drive_context"
+TRAFFIC_SIGNAL_PRESENT_TOPIC = "/traffic_signal/present"
+TRAFFIC_SIGNAL_RED_TOPIC = "/traffic_signal/red"
+TRAFFIC_SIGNAL_GREEN_TOPIC = "/traffic_signal/green"
 ROS_QOS_DEPTH = 10
 
 ROAD_TYPES = {"highway", "city", "unknown"}
@@ -52,6 +56,9 @@ Required JSON schema:
   "hazard_present": true,
   "hazard_type": "none | obstacle | pedestrian_intrusion_risk | unknown",
   "hazard_reason": "short evidence-based explanation",
+  "traffic_signal_present": true,
+  "traffic_signal_red": false,
+  "traffic_signal_green": false,
   "driving_action": "accelerate | maintain_speed | decelerate",
   "decision_reason": "short explanation based on the visible scene"
 }
@@ -61,6 +68,9 @@ Decision rules:
 - road_surface: use wet only when the road visibly appears wet, rainy, or puddled; use dry only when it visibly appears dry.
 - hazard_present: true only when there is a forward hazard such as an obstacle or a person likely to enter the lane.
 - hazard_type: use none when hazard_present is false.
+- traffic_signal_present: true only when a traffic signal is visibly present.
+- traffic_signal_red and traffic_signal_green: true only when that light state is clearly visible.
+- If traffic_signal_present is false, set traffic_signal_red and traffic_signal_green to false.
 - hazard_reason and decision_reason must be brief and based only on visible evidence.
 """
 
@@ -70,17 +80,44 @@ USER_PROMPT = (
 
 
 class DrivingDecisionPublisher(Node):
-    """ROS 2 publisher node for streaming structured driving decisions."""
+    """ROS 2 publisher node for streaming structured driving context."""
 
     def __init__(self, topic_name: str, qos_depth: int):
         super().__init__(ROS_NODE_NAME)
-        self.publisher = self.create_publisher(String, topic_name, qos_depth)
+        self.context_publisher = self.create_publisher(String, topic_name, qos_depth)
+        self.signal_present_publisher = self.create_publisher(
+            Bool,
+            TRAFFIC_SIGNAL_PRESENT_TOPIC,
+            qos_depth,
+        )
+        self.signal_red_publisher = self.create_publisher(
+            Bool,
+            TRAFFIC_SIGNAL_RED_TOPIC,
+            qos_depth,
+        )
+        self.signal_green_publisher = self.create_publisher(
+            Bool,
+            TRAFFIC_SIGNAL_GREEN_TOPIC,
+            qos_depth,
+        )
 
     def publish_analysis(self, analysis_result: dict):
-        """Publish the normalized JSON result as a ROS 2 String message."""
-        message = String()
-        message.data = json.dumps(analysis_result, ensure_ascii=False)
-        self.publisher.publish(message)
+        """Publish the normalized JSON result and traffic-signal flags."""
+        context_message = String()
+        context_message.data = json.dumps(analysis_result, ensure_ascii=False)
+        self.context_publisher.publish(context_message)
+
+        signal_present_message = Bool()
+        signal_present_message.data = analysis_result["traffic_signal_present"]
+        self.signal_present_publisher.publish(signal_present_message)
+
+        signal_red_message = Bool()
+        signal_red_message.data = analysis_result["traffic_signal_red"]
+        self.signal_red_publisher.publish(signal_red_message)
+
+        signal_green_message = Bool()
+        signal_green_message.data = analysis_result["traffic_signal_green"]
+        self.signal_green_publisher.publish(signal_green_message)
 
 
 def smart_resize(image: Image.Image, factor: int = 28) -> Image.Image:
@@ -204,13 +241,24 @@ def determine_driving_action(
     road_surface: str,
     hazard_present: bool,
     hazard_type: str,
+    traffic_signal_present: bool,
+    traffic_signal_red: bool,
+    traffic_signal_green: bool,
 ):
     """Derive the final vehicle action from the first scene judgments."""
+    if traffic_signal_present and traffic_signal_red:
+        return "decelerate", "Red traffic signal is visible ahead."
+
     if hazard_present and hazard_type in {"obstacle", "pedestrian_intrusion_risk", "unknown"}:
         return "decelerate", "Hazard detected ahead, so slowing down is safest."
 
     if road_surface == "wet":
         return "decelerate", "Road appears wet, so reducing speed is safer."
+
+    if traffic_signal_present and traffic_signal_green:
+        if road_type == "highway":
+            return "accelerate", "Green signal is visible and the roadway appears clear."
+        return "maintain_speed", "Green signal is visible, so continuing smoothly is appropriate."
 
     if road_type == "highway":
         return "accelerate", "Highway scene appears clear and dry."
@@ -229,6 +277,9 @@ def parse_analysis_response(response_text: str) -> dict:
     road_surface = normalize_enum(parsed.get("road_surface"), ROAD_SURFACES)
     hazard_present = normalize_bool(parsed.get("hazard_present"))
     hazard_type = normalize_enum(parsed.get("hazard_type"), HAZARD_TYPES)
+    traffic_signal_present = normalize_bool(parsed.get("traffic_signal_present"))
+    traffic_signal_red = normalize_bool(parsed.get("traffic_signal_red"))
+    traffic_signal_green = normalize_bool(parsed.get("traffic_signal_green"))
 
     if not hazard_present:
         hazard_type = "none"
@@ -241,11 +292,18 @@ def parse_analysis_response(response_text: str) -> dict:
             "Potential forward hazard is visible.",
         )
 
+    if not traffic_signal_present:
+        traffic_signal_red = False
+        traffic_signal_green = False
+
     driving_action, decision_reason = determine_driving_action(
         road_type=road_type,
         road_surface=road_surface,
         hazard_present=hazard_present,
         hazard_type=hazard_type,
+        traffic_signal_present=traffic_signal_present,
+        traffic_signal_red=traffic_signal_red,
+        traffic_signal_green=traffic_signal_green,
     )
 
     return {
@@ -254,6 +312,9 @@ def parse_analysis_response(response_text: str) -> dict:
         "hazard_present": hazard_present,
         "hazard_type": hazard_type,
         "hazard_reason": hazard_reason,
+        "traffic_signal_present": traffic_signal_present,
+        "traffic_signal_red": traffic_signal_red,
+        "traffic_signal_green": traffic_signal_green,
         "driving_action": driving_action,
         "decision_reason": decision_reason,
     }
@@ -294,11 +355,20 @@ def wrap_text(text: str, max_chars_per_line: int) -> list[str]:
 def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
     """Build compact overlay lines from the normalized JSON result."""
     hazard_label = analysis_result["hazard_type"] if analysis_result["hazard_present"] else "none"
+    signal_label = "none"
+    if analysis_result["traffic_signal_present"]:
+        if analysis_result["traffic_signal_red"]:
+            signal_label = "red"
+        elif analysis_result["traffic_signal_green"]:
+            signal_label = "green"
+        else:
+            signal_label = "present"
     lines = [
         f"Frame: {frame_count}",
         f"Road: {analysis_result['road_type']}",
         f"Surface: {analysis_result['road_surface']}",
         f"Hazard: {hazard_label}",
+        f"Signal: {signal_label}",
         f"Action: {analysis_result['driving_action']}",
     ]
     lines.extend(wrap_text(f"Why: {analysis_result['decision_reason']}", 55)[:2])
@@ -307,7 +377,7 @@ def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
 
 def initialize_ros_publisher():
     """Create a ROS 2 publisher if rclpy is available in the runtime."""
-    if rclpy is None or String is None:
+    if rclpy is None or String is None or Bool is None:
         print("ROS 2 publisher disabled: rclpy/std_msgs are not available in this environment.\n")
         return None
 
@@ -315,7 +385,11 @@ def initialize_ros_publisher():
         rclpy.init(args=None)
 
     publisher_node = DrivingDecisionPublisher(ROS_TOPIC_NAME, ROS_QOS_DEPTH)
-    print(f"ROS 2 publisher ready on topic: {ROS_TOPIC_NAME}\n")
+    print(f"ROS 2 publisher ready on topic: {ROS_TOPIC_NAME}")
+    print(
+        "Traffic signal topics: "
+        f"{TRAFFIC_SIGNAL_PRESENT_TOPIC}, {TRAFFIC_SIGNAL_RED_TOPIC}, {TRAFFIC_SIGNAL_GREEN_TOPIC}\n"
+    )
     return publisher_node
 
 
