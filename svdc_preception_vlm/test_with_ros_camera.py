@@ -1,6 +1,7 @@
 """ROS 2 camera subscriber entrypoint for the shared VLM driving pipeline."""
 
 import json
+import threading
 import time
 from datetime import datetime
 
@@ -85,11 +86,64 @@ class RosCameraDrivingMonitor(Node):
         self.topic_name = topic_name
         self.latest_frame_bgr = None
         self.last_result = None
+        self.last_result_frame_count = 0
         self.frame_count = 0
         self.received_frame_count = 0
         self.last_processed_frame_count = 0
         self.last_analysis_time = 0.0
         self.last_error_message = None
+        self.analysis_lock = threading.Lock()
+        self.analysis_in_progress = False
+        self.completed_analysis = None
+
+    def start_analysis(self, frame_bgr, frame_count: int, timestamp: str):
+        """Start VLM analysis without blocking the camera display loop."""
+        with self.analysis_lock:
+            if self.analysis_in_progress:
+                return False
+            self.analysis_in_progress = True
+
+        worker = threading.Thread(
+            target=self._run_analysis,
+            args=(frame_bgr, frame_count, timestamp),
+            daemon=True,
+        )
+        worker.start()
+        return True
+
+    def _run_analysis(self, frame_bgr, frame_count: int, timestamp: str):
+        raw_result = None
+        try:
+            raw_result, parsed_result = analyze_frame_with_vlm(frame_bgr)
+            analysis = {
+                "frame_count": frame_count,
+                "timestamp": timestamp,
+                "raw_result": raw_result,
+                "parsed_result": parsed_result,
+                "error": None,
+            }
+        except Exception as error:
+            analysis = {
+                "frame_count": frame_count,
+                "timestamp": timestamp,
+                "raw_result": raw_result,
+                "parsed_result": None,
+                "error": error,
+            }
+
+        with self.analysis_lock:
+            self.completed_analysis = analysis
+            self.analysis_in_progress = False
+
+    def pop_completed_analysis(self):
+        with self.analysis_lock:
+            analysis = self.completed_analysis
+            self.completed_analysis = None
+        return analysis
+
+    def is_analysis_running(self):
+        with self.analysis_lock:
+            return self.analysis_in_progress
 
     def image_callback(self, message: Image):
         """Store the newest frame from the ROS camera stream."""
@@ -155,7 +209,10 @@ def run_ros_camera_monitor(
 
             if subscriber.last_result:
                 y_offset = 30
-                overlay_lines = build_overlay_lines(subscriber.frame_count, subscriber.last_result)
+                overlay_lines = build_overlay_lines(
+                    subscriber.last_result_frame_count,
+                    subscriber.last_result,
+                )
                 for line in overlay_lines:
                     font_scale = 0.65 if line.startswith("Frame:") else 0.55
                     thickness = 2 if line.startswith("Frame:") else 1
@@ -172,24 +229,17 @@ def run_ros_camera_monitor(
 
             cv2.imshow(window_name, display_frame)
 
-            has_new_frame = (
-                subscriber.received_frame_count > subscriber.last_processed_frame_count
-                and subscriber.latest_frame_bgr is not None
-            )
-            is_analysis_due = time.time() - subscriber.last_analysis_time >= CAPTURE_INTERVAL
-            if has_new_frame and is_analysis_due:
-                subscriber.frame_count += 1
-                subscriber.last_processed_frame_count = subscriber.received_frame_count
-                subscriber.last_analysis_time = time.time()
-                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            completed_analysis = subscriber.pop_completed_analysis()
+            if completed_analysis:
+                frame_count = completed_analysis["frame_count"]
+                timestamp = completed_analysis["timestamp"]
+                raw_result = completed_analysis["raw_result"]
+                parsed_result = completed_analysis["parsed_result"]
+                error = completed_analysis["error"]
 
-                print(f"[Frame {subscriber.frame_count}] {timestamp}")
+                print(f"[Frame {frame_count}] {timestamp}")
                 print("-" * 80)
-
-                raw_result = None
-                try:
-                    raw_result, parsed_result = analyze_frame_with_vlm(subscriber.latest_frame_bgr)
-
+                if error is None:
                     print(f"Response Time: {raw_result['elapsed_time']:.2f}s")
                     print("Structured Output:")
                     print(json.dumps(parsed_result, indent=2))
@@ -197,14 +247,32 @@ def run_ros_camera_monitor(
                         print(f"Published to ROS 2 topic: {ROS_TOPIC_NAME}")
 
                     subscriber.last_result = parsed_result
-
-                except Exception as error:
+                    subscriber.last_result_frame_count = frame_count
+                else:
                     print(f"Error: {error}")
                     if raw_result and raw_result.get("response"):
                         print("Raw model response:")
                         print(raw_result["response"])
-
                 print("-" * 80 + "\n")
+
+            has_new_frame = (
+                subscriber.received_frame_count > subscriber.last_processed_frame_count
+                and subscriber.latest_frame_bgr is not None
+            )
+            is_analysis_due = time.time() - subscriber.last_analysis_time >= CAPTURE_INTERVAL
+            if has_new_frame and is_analysis_due and not subscriber.is_analysis_running():
+                subscriber.frame_count += 1
+                subscriber.last_processed_frame_count = subscriber.received_frame_count
+                subscriber.last_analysis_time = time.time()
+                timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                frame_for_analysis = subscriber.latest_frame_bgr.copy()
+
+                if subscriber.start_analysis(
+                    frame_for_analysis,
+                    subscriber.frame_count,
+                    timestamp,
+                ):
+                    print(f"[Frame {subscriber.frame_count}] {timestamp} - VLM analysis started")
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 print("\nMonitoring stopped by user")
