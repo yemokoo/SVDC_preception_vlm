@@ -29,11 +29,14 @@ VLLM_BASE_URL = os.getenv("SVDC_VLM_BASE_URL", "http://192.168.64.1:11434")
 CAPTURE_INTERVAL = 3  # seconds
 ROS_NODE_NAME = "vlm_drive_context_publisher"
 ROS_TOPIC_NAME = "/drive_context"
+SCENE_CONTEXT_TOPIC = "/scene_context"
+TRAFFIC_CONE_PRESENT_TOPIC = "/traffic_cone/present"
 TRAFFIC_SIGNAL_PRESENT_TOPIC = "/traffic_signal/present"
 TRAFFIC_SIGNAL_RED_TOPIC = "/traffic_signal/red"
 TRAFFIC_SIGNAL_GREEN_TOPIC = "/traffic_signal/green"
 ROS_QOS_DEPTH = 10
 
+SCENE_CONTEXTS = {"simple", "complex", "unknown"}
 ROAD_TYPES = {"highway", "city", "unknown"}
 ROAD_SURFACES = {"dry", "wet", "unknown"}
 HAZARD_TYPES = {"none", "obstacle", "pedestrian_intrusion_risk", "unknown"}
@@ -51,6 +54,9 @@ Output requirements:
 
 Required JSON schema:
 {
+  "scene_context": "simple | complex | unknown",
+  "traffic_cone_present": true,
+  "traffic_cone_reason": "short evidence-based explanation",
   "road_type": "highway | city | unknown",
   "road_surface": "dry | wet | unknown",
   "hazard_present": true,
@@ -64,18 +70,29 @@ Required JSON schema:
 }
 
 Decision rules:
+- scene_context: use complex whenever a traffic cone, road cone, construction cone,
+  pylon cone, or rubber cone shape is visible anywhere in the driving scene. Use
+  simple only when no such cone-like object is visible and the scene is otherwise
+  clear enough to judge. Use unknown only when the image is too unclear.
+- traffic_cone_present: true when a cone-like road marker is visible. Judge by
+  shape, not color: look for a tapered cone/frustum body, wide base, stack/ring
+  bands, or pylon-like road marker silhouette. Cones may be orange, yellow, blue,
+  green, white, black, or other colors; do not require orange.
+- traffic_cone_reason: briefly name the visible shape evidence, not the color.
 - road_type: use highway for freeway or expressway scenes, city for urban or local roads, unknown if unclear.
 - road_surface: use wet only when the road visibly appears wet, rainy, or puddled; use dry only when it visibly appears dry.
-- hazard_present: true only when there is a forward hazard such as an obstacle or a person likely to enter the lane.
+- hazard_present: true only when there is a forward hazard such as an obstacle, traffic cone blocking or narrowing the lane, or a person likely to enter the lane.
 - hazard_type: use none when hazard_present is false.
+- hazard_type: use obstacle when a traffic cone is blocking, narrowing, or placed in the likely driving path.
 - traffic_signal_present: true only when a traffic signal is visibly present.
 - traffic_signal_red and traffic_signal_green: true only when that light state is clearly visible.
 - If traffic_signal_present is false, set traffic_signal_red and traffic_signal_green to false.
-- hazard_reason and decision_reason must be brief and based only on visible evidence.
+- traffic_cone_reason, hazard_reason, and decision_reason must be brief and based only on visible evidence.
 """
 
 USER_PROMPT = (
-    "Analyze this driving scene and respond with the required JSON object only."
+    "Analyze this driving scene, pay special attention to cone-shaped road markers, "
+    "and respond with the required JSON object only."
 )
 
 
@@ -85,6 +102,16 @@ class DrivingDecisionPublisher(Node):
     def __init__(self, topic_name: str, qos_depth: int):
         super().__init__(ROS_NODE_NAME)
         self.context_publisher = self.create_publisher(String, topic_name, qos_depth)
+        self.scene_context_publisher = self.create_publisher(
+            String,
+            SCENE_CONTEXT_TOPIC,
+            qos_depth,
+        )
+        self.traffic_cone_present_publisher = self.create_publisher(
+            Bool,
+            TRAFFIC_CONE_PRESENT_TOPIC,
+            qos_depth,
+        )
         self.signal_present_publisher = self.create_publisher(
             Bool,
             TRAFFIC_SIGNAL_PRESENT_TOPIC,
@@ -106,6 +133,14 @@ class DrivingDecisionPublisher(Node):
         context_message = String()
         context_message.data = json.dumps(analysis_result, ensure_ascii=False)
         self.context_publisher.publish(context_message)
+
+        scene_context_message = String()
+        scene_context_message.data = analysis_result["scene_context"]
+        self.scene_context_publisher.publish(scene_context_message)
+
+        cone_present_message = Bool()
+        cone_present_message.data = analysis_result["traffic_cone_present"]
+        self.traffic_cone_present_publisher.publish(cone_present_message)
 
         signal_present_message = Bool()
         signal_present_message.data = analysis_result["traffic_signal_present"]
@@ -273,6 +308,8 @@ def parse_analysis_response(response_text: str) -> dict:
     """Parse model JSON and normalize it into a stable key-value structure."""
     parsed = json.loads(extract_json_object(response_text))
 
+    scene_context = normalize_enum(parsed.get("scene_context"), SCENE_CONTEXTS, default="simple")
+    traffic_cone_present = normalize_bool(parsed.get("traffic_cone_present"))
     road_type = normalize_enum(parsed.get("road_type"), ROAD_TYPES)
     road_surface = normalize_enum(parsed.get("road_surface"), ROAD_SURFACES)
     hazard_present = normalize_bool(parsed.get("hazard_present"))
@@ -280,6 +317,22 @@ def parse_analysis_response(response_text: str) -> dict:
     traffic_signal_present = normalize_bool(parsed.get("traffic_signal_present"))
     traffic_signal_red = normalize_bool(parsed.get("traffic_signal_red"))
     traffic_signal_green = normalize_bool(parsed.get("traffic_signal_green"))
+
+    if traffic_cone_present:
+        scene_context = "complex"
+        traffic_cone_reason = sanitize_reason(
+            parsed.get("traffic_cone_reason"),
+            "Traffic-cone-shaped road marker is visible.",
+        )
+    else:
+        if scene_context == "complex":
+            traffic_cone_present = True
+            traffic_cone_reason = sanitize_reason(
+                parsed.get("traffic_cone_reason"),
+                "Traffic-cone-shaped road marker is visible.",
+            )
+        else:
+            traffic_cone_reason = "No traffic cone shape detected."
 
     if not hazard_present:
         hazard_type = "none"
@@ -307,6 +360,9 @@ def parse_analysis_response(response_text: str) -> dict:
     )
 
     return {
+        "scene_context": scene_context,
+        "traffic_cone_present": traffic_cone_present,
+        "traffic_cone_reason": traffic_cone_reason,
         "road_type": road_type,
         "road_surface": road_surface,
         "hazard_present": hazard_present,
@@ -354,6 +410,7 @@ def wrap_text(text: str, max_chars_per_line: int) -> list[str]:
 
 def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
     """Build compact overlay lines from the normalized JSON result."""
+    cone_label = "present" if analysis_result["traffic_cone_present"] else "none"
     hazard_label = analysis_result["hazard_type"] if analysis_result["hazard_present"] else "none"
     signal_label = "none"
     if analysis_result["traffic_signal_present"]:
@@ -365,6 +422,8 @@ def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
             signal_label = "present"
     lines = [
         f"Frame: {frame_count}",
+        f"Context: {analysis_result['scene_context']}",
+        f"Cone: {cone_label}",
         f"Road: {analysis_result['road_type']}",
         f"Surface: {analysis_result['road_surface']}",
         f"Hazard: {hazard_label}",
@@ -386,6 +445,8 @@ def initialize_ros_publisher():
 
     publisher_node = DrivingDecisionPublisher(ROS_TOPIC_NAME, ROS_QOS_DEPTH)
     print(f"ROS 2 publisher ready on topic: {ROS_TOPIC_NAME}")
+    print(f"Scene context topic: {SCENE_CONTEXT_TOPIC}")
+    print(f"Traffic cone topic: {TRAFFIC_CONE_PRESENT_TOPIC}")
     print(
         "Traffic signal topics: "
         f"{TRAFFIC_SIGNAL_PRESENT_TOPIC}, {TRAFFIC_SIGNAL_RED_TOPIC}, {TRAFFIC_SIGNAL_GREEN_TOPIC}\n"

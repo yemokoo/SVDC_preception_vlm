@@ -115,7 +115,7 @@ ros2 run svdc_preception_vlm ros_camera_node
 Both execution modes publish the analyzed driving decision to:
 
 ```text
-/svdc/driving_decision
+/drive_context
 ```
 
 Message type:
@@ -128,14 +128,27 @@ The published message is a JSON string like this:
 
 ```json
 {
+  "scene_context": "simple",
+  "traffic_cone_present": false,
+  "traffic_cone_reason": "No traffic cone shape detected.",
   "road_type": "unknown",
   "road_surface": "unknown",
   "hazard_present": false,
   "hazard_type": "none",
   "hazard_reason": "No forward hazard detected.",
+  "traffic_signal_present": false,
+  "traffic_signal_red": false,
+  "traffic_signal_green": false,
   "driving_action": "maintain_speed",
   "decision_reason": "Scene certainty is limited, so maintaining speed is safer."
 }
+```
+
+Scene context and traffic-cone detection are also published separately:
+
+```text
+/scene_context
+/traffic_cone/present
 ```
 
 ### Input topic
