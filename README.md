@@ -253,9 +253,14 @@ Edit `svdc_vlm_config.local.json`:
 {
   "provider": "gemini",
   "gemini_api_key": "PASTE_GEMINI_API_KEY_HERE",
-  "gemini_model": "gemini-3-flash-preview"
+  "gemini_model": "gemini-3-flash-preview",
+  "image_max_dim": 640
 }
 ```
+
+Lower `image_max_dim` to `512` or `448` if Gemini responses are too slow. The
+debug camera window still uses the original ROS image; this only resizes the
+image sent to the vision model.
 
 Then rebuild/source once and run normally:
 

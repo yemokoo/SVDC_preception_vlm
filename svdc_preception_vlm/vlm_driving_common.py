@@ -82,6 +82,12 @@ GEMINI_BASE_URL = os.getenv(
         "https://generativelanguage.googleapis.com/v1beta",
     ),
 )
+VLM_IMAGE_MAX_DIM = int(
+    os.getenv(
+        "SVDC_VLM_IMAGE_MAX_DIM",
+        LOCAL_VLM_CONFIG.get("image_max_dim", 640),
+    )
+)
 CAPTURE_INTERVAL = 3  # seconds
 ROS_NODE_NAME = "vlm_drive_context_publisher"
 ROS_TOPIC_NAME = "/drive_context"
@@ -190,8 +196,8 @@ def configure_vlm_backend(
 def describe_vlm_backend() -> str:
     """Return a log-safe summary of the active vision model backend."""
     if VLM_PROVIDER == "gemini":
-        return f"gemini api model={GEMINI_MODEL_NAME}"
-    return f"vllm base_url={VLLM_BASE_URL} model={MODEL_NAME}"
+        return f"gemini api model={GEMINI_MODEL_NAME} image_max_dim={VLM_IMAGE_MAX_DIM}"
+    return f"vllm base_url={VLLM_BASE_URL} model={MODEL_NAME} image_max_dim={VLM_IMAGE_MAX_DIM}"
 
 
 class DrivingDecisionPublisher(Node):
@@ -253,9 +259,20 @@ class DrivingDecisionPublisher(Node):
         self.signal_green_publisher.publish(signal_green_message)
 
 
-def smart_resize(image: Image.Image, factor: int = 28) -> Image.Image:
-    """Resize image to dimensions divisible by factor."""
+def smart_resize(
+    image: Image.Image,
+    factor: int = 28,
+    max_dim: int = VLM_IMAGE_MAX_DIM,
+) -> Image.Image:
+    """Resize image for VLM inference while preserving aspect ratio."""
     width, height = image.size
+    if max_dim > 0:
+        longest_side = max(width, height)
+        if longest_side > max_dim:
+            scale = max_dim / longest_side
+            width = max(round(width * scale), factor)
+            height = max(round(height * scale), factor)
+
     target_width = round(width / factor) * factor
     target_height = round(height / factor) * factor
     target_width = max(target_width, factor)
