@@ -221,3 +221,47 @@ Optional overrides:
 set SVDC_VLM_BASE_URL=http://192.168.64.1:11434
 set SVDC_VLM_MODEL=qwen3-vl:8b-instruct
 ```
+
+Gemini API mode:
+
+```bash
+source /home/yemo/ros2_ws/install/setup.bash
+ros2 run svdc_preception_vlm ros_camera_node \
+  --provider gemini \
+  --gemini-api-key "$GEMINI_API_KEY"
+```
+
+Gemini mode uses `gemini-3-flash-preview` by default. You can override it with:
+
+```bash
+ros2 run svdc_preception_vlm ros_camera_node \
+  --provider gemini \
+  --gemini-api-key "$GEMINI_API_KEY" \
+  --gemini-model gemini-3-flash-preview
+```
+
+For one-command startup on the ROS machine, create a local config file at the
+repository root. This file is ignored by git:
+
+```bash
+cp svdc_vlm_config.example.json svdc_vlm_config.local.json
+```
+
+Edit `svdc_vlm_config.local.json`:
+
+```json
+{
+  "provider": "gemini",
+  "gemini_api_key": "PASTE_GEMINI_API_KEY_HERE",
+  "gemini_model": "gemini-3-flash-preview"
+}
+```
+
+Then rebuild/source once and run normally:
+
+```bash
+cd /home/yemo/ros2_ws
+colcon build --packages-select svdc_preception_vlm --symlink-install
+source install/setup.bash
+ros2 run svdc_preception_vlm ros_camera_node
+```

@@ -1,5 +1,6 @@
 """ROS 2 camera subscriber entrypoint for the shared VLM driving pipeline."""
 
+import argparse
 import json
 import threading
 import time
@@ -22,6 +23,8 @@ from .vlm_driving_common import (
     ROS_TOPIC_NAME,
     analyze_frame_with_vlm,
     build_overlay_lines,
+    configure_vlm_backend,
+    describe_vlm_backend,
     initialize_ros_publisher,
     publish_analysis_to_ros,
     shutdown_ros_publisher,
@@ -177,6 +180,7 @@ def run_ros_camera_monitor(
     camera_topic_name: str = CAMERA_TOPIC_NAME,
     window_name: str = WINDOW_NAME,
     node_name: str = NODE_NAME,
+    rclpy_args=None,
 ):
     """Run the VLM monitor by subscribing to a ROS image topic."""
     if rclpy is None or Image is None:
@@ -188,10 +192,11 @@ def run_ros_camera_monitor(
     print("=" * 80)
     print(f"Subscribed topic: {camera_topic_name}")
     print(f"Capture interval: {CAPTURE_INTERVAL} seconds")
+    print(f"VLM backend: {describe_vlm_backend()}")
     print("Press 'q' in the monitor window or Ctrl+C to stop\n")
 
     if not rclpy.ok():
-        rclpy.init(args=None)
+        rclpy.init(args=rclpy_args)
 
     ros_publisher = initialize_ros_publisher()
     subscriber = RosCameraDrivingMonitor(camera_topic_name, CAMERA_QOS_DEPTH, node_name)
@@ -290,9 +295,65 @@ def run_ros_camera_monitor(
         print("ROS camera subscriber stopped")
 
 
-def main():
+def parse_args(argv=None):
+    """Parse app-specific arguments while leaving ROS arguments for rclpy."""
+    parser = argparse.ArgumentParser(
+        description="Run the ROS camera VLM driving monitor.",
+    )
+    parser.add_argument(
+        "--provider",
+        "--vlm-provider",
+        choices=("vllm", "gemini"),
+        default=None,
+        help="Vision model backend to use. Defaults to SVDC_VLM_PROVIDER or vllm.",
+    )
+    parser.add_argument(
+        "--vllm-base-url",
+        default=None,
+        help="OpenAI-compatible vLLM base URL.",
+    )
+    parser.add_argument(
+        "--vlm-model",
+        default=None,
+        help="OpenAI-compatible vLLM model name.",
+    )
+    parser.add_argument(
+        "--gemini-api-key",
+        default=None,
+        help="Gemini API key. Can also be set with SVDC_GEMINI_API_KEY or GEMINI_API_KEY.",
+    )
+    parser.add_argument(
+        "--gemini-model",
+        default=None,
+        help="Gemini model name. Defaults to SVDC_GEMINI_MODEL or gemini-3-flash-preview.",
+    )
+    parser.add_argument(
+        "--camera-topic",
+        default=CAMERA_TOPIC_NAME,
+        help=f"ROS image topic to subscribe to. Defaults to {CAMERA_TOPIC_NAME}.",
+    )
+    return parser.parse_known_args(argv)
+
+
+def main(argv=None):
     """Default ROS 2 camera entrypoint using the ROS raw image topic."""
-    run_ros_camera_monitor()
+    args, rclpy_args = parse_args(argv)
+    try:
+        configure_vlm_backend(
+            provider=args.provider,
+            vllm_base_url=args.vllm_base_url,
+            vllm_model=args.vlm_model,
+            gemini_api_key=args.gemini_api_key,
+            gemini_model=args.gemini_model,
+        )
+    except ValueError as error:
+        print(f"Configuration error: {error}")
+        return
+
+    run_ros_camera_monitor(
+        camera_topic_name=args.camera_topic,
+        rclpy_args=rclpy_args or None,
+    )
 
 
 if __name__ == "__main__":

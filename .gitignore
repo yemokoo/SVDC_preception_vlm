@@ -3,3 +3,4 @@ __pycache__/
 .vscode/
 .venv/
 *.egg-info/
+svdc_vlm_config.local.json

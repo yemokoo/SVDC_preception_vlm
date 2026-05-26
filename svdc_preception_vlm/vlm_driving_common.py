@@ -5,6 +5,7 @@ import json
 import os
 import time
 from io import BytesIO
+from pathlib import Path
 
 import cv2
 import requests
@@ -24,8 +25,63 @@ except ImportError:
     String = None
 
 
-MODEL_NAME = os.getenv("SVDC_VLM_MODEL", "qwen3-vl:8b-instruct")
-VLLM_BASE_URL = os.getenv("SVDC_VLM_BASE_URL", "http://192.168.64.1:11434")
+
+def load_local_vlm_config() -> dict:
+    """Load optional local, untracked VLM settings for one-command startup."""
+    config_paths = []
+    configured_path = os.getenv("SVDC_VLM_CONFIG")
+    if configured_path:
+        config_paths.append(Path(configured_path).expanduser())
+
+    repo_root = Path(__file__).resolve().parent.parent
+    config_paths.extend(
+        [
+            Path.cwd() / "svdc_vlm_config.local.json",
+            repo_root / "svdc_vlm_config.local.json",
+            Path.home() / ".config" / "svdc_preception_vlm" / "config.json",
+        ]
+    )
+
+    for config_path in config_paths:
+        if not config_path.is_file():
+            continue
+        with config_path.open("r", encoding="utf-8") as file:
+            return json.load(file)
+
+    return {}
+
+
+LOCAL_VLM_CONFIG = load_local_vlm_config()
+
+MODEL_NAME = os.getenv(
+    "SVDC_VLM_MODEL",
+    LOCAL_VLM_CONFIG.get("vllm_model", "qwen3-vl:8b-instruct"),
+)
+VLLM_BASE_URL = os.getenv(
+    "SVDC_VLM_BASE_URL",
+    LOCAL_VLM_CONFIG.get("vllm_base_url", "http://192.168.64.1:11434"),
+)
+VLM_PROVIDER = os.getenv(
+    "SVDC_VLM_PROVIDER",
+    LOCAL_VLM_CONFIG.get("provider", "vllm"),
+).strip().lower()
+GEMINI_MODEL_NAME = os.getenv(
+    "SVDC_GEMINI_MODEL",
+    LOCAL_VLM_CONFIG.get("gemini_model", "gemini-3-flash-preview"),
+)
+GEMINI_API_KEY = (
+    os.getenv("SVDC_GEMINI_API_KEY")
+    or os.getenv("GEMINI_API_KEY")
+    or os.getenv("GOOGLE_API_KEY")
+    or LOCAL_VLM_CONFIG.get("gemini_api_key")
+)
+GEMINI_BASE_URL = os.getenv(
+    "SVDC_GEMINI_BASE_URL",
+    LOCAL_VLM_CONFIG.get(
+        "gemini_base_url",
+        "https://generativelanguage.googleapis.com/v1beta",
+    ),
+)
 CAPTURE_INTERVAL = 3  # seconds
 ROS_NODE_NAME = "vlm_drive_context_publisher"
 ROS_TOPIC_NAME = "/drive_context"
@@ -94,6 +150,48 @@ USER_PROMPT = (
     "Analyze this driving scene, pay special attention to cone-shaped road markers, "
     "and respond with the required JSON object only."
 )
+
+
+def configure_vlm_backend(
+    provider=None,
+    vllm_base_url=None,
+    vllm_model=None,
+    gemini_api_key=None,
+    gemini_model=None,
+):
+    """Apply runtime model backend settings from CLI arguments."""
+    global GEMINI_API_KEY
+    global GEMINI_MODEL_NAME
+    global MODEL_NAME
+    global VLLM_BASE_URL
+    global VLM_PROVIDER
+
+    normalized_provider = (provider or VLM_PROVIDER).strip().lower()
+    if normalized_provider not in {"vllm", "gemini"}:
+        raise ValueError("VLM provider must be either 'vllm' or 'gemini'.")
+    VLM_PROVIDER = normalized_provider
+
+    if vllm_base_url:
+        VLLM_BASE_URL = vllm_base_url.rstrip("/")
+    if vllm_model:
+        MODEL_NAME = vllm_model
+    if gemini_api_key:
+        GEMINI_API_KEY = gemini_api_key
+    if gemini_model:
+        GEMINI_MODEL_NAME = gemini_model
+
+    if VLM_PROVIDER == "gemini" and not GEMINI_API_KEY:
+        raise ValueError(
+            "Gemini provider selected, but no API key was provided. "
+            "Pass --gemini-api-key or set SVDC_GEMINI_API_KEY/GEMINI_API_KEY."
+        )
+
+
+def describe_vlm_backend() -> str:
+    """Return a log-safe summary of the active vision model backend."""
+    if VLM_PROVIDER == "gemini":
+        return f"gemini api model={GEMINI_MODEL_NAME}"
+    return f"vllm base_url={VLLM_BASE_URL} model={MODEL_NAME}"
 
 
 class DrivingDecisionPublisher(Node):
@@ -220,6 +318,65 @@ def query_vllm_server(system_prompt: str, user_text: str, image_base64: str) -> 
         "elapsed_time": elapsed_time,
         "response": model_response,
     }
+
+
+def query_gemini_api(system_prompt: str, user_text: str, image_base64: str) -> dict:
+    """Send request to the native Gemini API and return response with timing."""
+    if not GEMINI_API_KEY:
+        raise ValueError("Gemini API key is not configured.")
+
+    prompt_text = f"{system_prompt.strip()}\n\n{user_text.strip()}"
+    payload = {
+        "contents": [
+            {
+                "role": "user",
+                "parts": [
+                    {"text": prompt_text},
+                    {
+                        "inline_data": {
+                            "mime_type": "image/png",
+                            "data": image_base64,
+                        },
+                    },
+                ],
+            }
+        ],
+        "generationConfig": {
+            "temperature": 0.0,
+            "maxOutputTokens": 2048,
+        },
+    }
+
+    start_time = time.time()
+    response = requests.post(
+        f"{GEMINI_BASE_URL}/models/{GEMINI_MODEL_NAME}:generateContent",
+        json=payload,
+        headers={
+            "Content-Type": "application/json",
+            "x-goog-api-key": GEMINI_API_KEY,
+        },
+        timeout=120,
+    )
+    elapsed_time = time.time() - start_time
+
+    response.raise_for_status()
+    result = response.json()
+    parts = result["candidates"][0]["content"]["parts"]
+    model_response = "".join(part.get("text", "") for part in parts).strip()
+    if not model_response:
+        raise ValueError("Gemini response did not contain text content.")
+
+    return {
+        "elapsed_time": elapsed_time,
+        "response": model_response,
+    }
+
+
+def query_vision_model(system_prompt: str, user_text: str, image_base64: str) -> dict:
+    """Route a VLM request to the configured backend."""
+    if VLM_PROVIDER == "gemini":
+        return query_gemini_api(system_prompt, user_text, image_base64)
+    return query_vllm_server(system_prompt, user_text, image_base64)
 
 
 def extract_json_object(response_text: str) -> str:
@@ -381,7 +538,7 @@ def analyze_frame_with_vlm(frame_bgr) -> tuple[dict, dict]:
     frame_rgb = cv2.cvtColor(frame_bgr, cv2.COLOR_BGR2RGB)
     frame_pil = Image.fromarray(frame_rgb)
     image_base64 = encode_image_to_base64(frame_pil)
-    raw_result = query_vllm_server(SYSTEM_PROMPT, USER_PROMPT, image_base64)
+    raw_result = query_vision_model(SYSTEM_PROMPT, USER_PROMPT, image_base64)
     parsed_result = parse_analysis_response(raw_result["response"])
     return raw_result, parsed_result
 
