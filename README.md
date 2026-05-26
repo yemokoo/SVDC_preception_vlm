@@ -254,13 +254,20 @@ Edit `svdc_vlm_config.local.json`:
   "provider": "gemini",
   "gemini_api_key": "PASTE_GEMINI_API_KEY_HERE",
   "gemini_model": "gemini-3-flash-preview",
-  "image_max_dim": 640
+  "image_max_dim": 640,
+  "max_in_flight": 2,
+  "capture_interval": 3.0
 }
 ```
 
 Lower `image_max_dim` to `512` or `448` if Gemini responses are too slow. The
 debug camera window still uses the original ROS image; this only resizes the
 image sent to the vision model.
+
+Increase `max_in_flight` to `3` to send multiple VLM requests concurrently.
+Completed responses are published in frame-number order, so downstream topics
+stay FIFO even if later requests finish first. Lower `capture_interval` to send
+frames more frequently, but watch API cost and rate limits.
 
 Then rebuild/source once and run normally:
 

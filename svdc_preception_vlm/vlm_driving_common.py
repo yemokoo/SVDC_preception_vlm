@@ -88,7 +88,18 @@ VLM_IMAGE_MAX_DIM = int(
         LOCAL_VLM_CONFIG.get("image_max_dim", 640),
     )
 )
-CAPTURE_INTERVAL = 3  # seconds
+MAX_IN_FLIGHT_ANALYSES = int(
+    os.getenv(
+        "SVDC_VLM_MAX_IN_FLIGHT",
+        LOCAL_VLM_CONFIG.get("max_in_flight", 2),
+    )
+)
+CAPTURE_INTERVAL = float(
+    os.getenv(
+        "SVDC_VLM_CAPTURE_INTERVAL",
+        LOCAL_VLM_CONFIG.get("capture_interval", 3.0),
+    )
+)
 ROS_NODE_NAME = "vlm_drive_context_publisher"
 ROS_TOPIC_NAME = "/drive_context"
 SCENE_CONTEXT_TOPIC = "/scene_context"
@@ -196,8 +207,14 @@ def configure_vlm_backend(
 def describe_vlm_backend() -> str:
     """Return a log-safe summary of the active vision model backend."""
     if VLM_PROVIDER == "gemini":
-        return f"gemini api model={GEMINI_MODEL_NAME} image_max_dim={VLM_IMAGE_MAX_DIM}"
-    return f"vllm base_url={VLLM_BASE_URL} model={MODEL_NAME} image_max_dim={VLM_IMAGE_MAX_DIM}"
+        return (
+            f"gemini api model={GEMINI_MODEL_NAME} image_max_dim={VLM_IMAGE_MAX_DIM} "
+            f"max_in_flight={MAX_IN_FLIGHT_ANALYSES}"
+        )
+    return (
+        f"vllm base_url={VLLM_BASE_URL} model={MODEL_NAME} "
+        f"image_max_dim={VLM_IMAGE_MAX_DIM} max_in_flight={MAX_IN_FLIGHT_ANALYSES}"
+    )
 
 
 class DrivingDecisionPublisher(Node):

@@ -2,5 +2,7 @@
   "provider": "gemini",
   "gemini_api_key": "PASTE_GEMINI_API_KEY_HERE",
   "gemini_model": "gemini-3-flash-preview",
-  "image_max_dim": 640
+  "image_max_dim": 640,
+  "max_in_flight": 2,
+  "capture_interval": 3.0
 }

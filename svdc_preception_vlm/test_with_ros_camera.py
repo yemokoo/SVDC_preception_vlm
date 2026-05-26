@@ -20,6 +20,7 @@ except ImportError:
 
 from .vlm_driving_common import (
     CAPTURE_INTERVAL,
+    MAX_IN_FLIGHT_ANALYSES,
     ROS_TOPIC_NAME,
     analyze_frame_with_vlm,
     build_overlay_lines,
@@ -96,15 +97,16 @@ class RosCameraDrivingMonitor(Node):
         self.last_analysis_time = 0.0
         self.last_error_message = None
         self.analysis_lock = threading.Lock()
-        self.analysis_in_progress = False
-        self.completed_analysis = None
+        self.analysis_in_flight = 0
+        self.completed_analyses = {}
+        self.next_completed_frame_count = 1
 
     def start_analysis(self, frame_bgr, frame_count: int, timestamp: str):
         """Start VLM analysis without blocking the camera display loop."""
         with self.analysis_lock:
-            if self.analysis_in_progress:
+            if self.analysis_in_flight >= MAX_IN_FLIGHT_ANALYSES:
                 return False
-            self.analysis_in_progress = True
+            self.analysis_in_flight += 1
 
         worker = threading.Thread(
             target=self._run_analysis,
@@ -135,18 +137,23 @@ class RosCameraDrivingMonitor(Node):
             }
 
         with self.analysis_lock:
-            self.completed_analysis = analysis
-            self.analysis_in_progress = False
+            self.completed_analyses[frame_count] = analysis
+            self.analysis_in_flight -= 1
 
-    def pop_completed_analysis(self):
+    def pop_completed_analysis_fifo(self):
         with self.analysis_lock:
-            analysis = self.completed_analysis
-            self.completed_analysis = None
+            analysis = self.completed_analyses.pop(self.next_completed_frame_count, None)
+            if analysis:
+                self.next_completed_frame_count += 1
         return analysis
 
-    def is_analysis_running(self):
+    def can_start_analysis(self):
         with self.analysis_lock:
-            return self.analysis_in_progress
+            return self.analysis_in_flight < MAX_IN_FLIGHT_ANALYSES
+
+    def get_analysis_in_flight(self):
+        with self.analysis_lock:
+            return self.analysis_in_flight
 
     def image_callback(self, message: Image):
         """Store the newest frame from the ROS camera stream."""
@@ -192,6 +199,7 @@ def run_ros_camera_monitor(
     print("=" * 80)
     print(f"Subscribed topic: {camera_topic_name}")
     print(f"Capture interval: {CAPTURE_INTERVAL} seconds")
+    print(f"Max in-flight analyses: {MAX_IN_FLIGHT_ANALYSES}")
     print(f"VLM backend: {describe_vlm_backend()}")
     print("Press 'q' in the monitor window or Ctrl+C to stop\n")
 
@@ -234,8 +242,10 @@ def run_ros_camera_monitor(
 
             cv2.imshow(window_name, display_frame)
 
-            completed_analysis = subscriber.pop_completed_analysis()
-            if completed_analysis:
+            while True:
+                completed_analysis = subscriber.pop_completed_analysis_fifo()
+                if not completed_analysis:
+                    break
                 frame_count = completed_analysis["frame_count"]
                 timestamp = completed_analysis["timestamp"]
                 raw_result = completed_analysis["raw_result"]
@@ -265,7 +275,7 @@ def run_ros_camera_monitor(
                 and subscriber.latest_frame_bgr is not None
             )
             is_analysis_due = time.time() - subscriber.last_analysis_time >= CAPTURE_INTERVAL
-            if has_new_frame and is_analysis_due and not subscriber.is_analysis_running():
+            if has_new_frame and is_analysis_due and subscriber.can_start_analysis():
                 subscriber.frame_count += 1
                 subscriber.last_processed_frame_count = subscriber.received_frame_count
                 subscriber.last_analysis_time = time.time()
@@ -277,7 +287,11 @@ def run_ros_camera_monitor(
                     subscriber.frame_count,
                     timestamp,
                 ):
-                    print(f"[Frame {subscriber.frame_count}] {timestamp} - VLM analysis started")
+                    in_flight = subscriber.get_analysis_in_flight()
+                    print(
+                        f"[Frame {subscriber.frame_count}] {timestamp} "
+                        f"- VLM analysis started ({in_flight}/{MAX_IN_FLIGHT_ANALYSES} in flight)"
+                    )
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
                 print("\nMonitoring stopped by user")
