@@ -110,9 +110,8 @@ TRAFFIC_SIGNAL_GREEN_TOPIC = "/traffic_signal/green"
 ROS_QOS_DEPTH = 10
 
 SCENE_CONTEXTS = {"simple", "complex", "unknown"}
-ROAD_TYPES = {"highway", "city", "unknown"}
-ROAD_SURFACES = {"dry", "wet", "unknown"}
 HAZARD_TYPES = {"none", "obstacle", "pedestrian_intrusion_risk", "unknown"}
+DRIVING_ACTIONS = {"accelerate", "maintain_speed", "decelerate"}
 
 SYSTEM_PROMPT = """You are an autonomous driving scene analyzer.
 
@@ -129,17 +128,12 @@ Required JSON schema:
 {
   "scene_context": "simple | complex | unknown",
   "traffic_cone_present": true,
-  "traffic_cone_reason": "short evidence-based explanation",
-  "road_type": "highway | city | unknown",
-  "road_surface": "dry | wet | unknown",
   "hazard_present": true,
   "hazard_type": "none | obstacle | pedestrian_intrusion_risk | unknown",
-  "hazard_reason": "short evidence-based explanation",
   "traffic_signal_present": true,
   "traffic_signal_red": false,
   "traffic_signal_green": false,
-  "driving_action": "accelerate | maintain_speed | decelerate",
-  "decision_reason": "short explanation based on the visible scene"
+  "driving_action": "accelerate | maintain_speed | decelerate"
 }
 
 Decision rules:
@@ -151,16 +145,13 @@ Decision rules:
   shape, not color: look for a tapered cone/frustum body, wide base, stack/ring
   bands, or pylon-like road marker silhouette. Cones may be orange, yellow, blue,
   green, white, black, or other colors; do not require orange.
-- traffic_cone_reason: briefly name the visible shape evidence, not the color.
-- road_type: use highway for freeway or expressway scenes, city for urban or local roads, unknown if unclear.
-- road_surface: use wet only when the road visibly appears wet, rainy, or puddled; use dry only when it visibly appears dry.
 - hazard_present: true only when there is a forward hazard such as an obstacle, traffic cone blocking or narrowing the lane, or a person likely to enter the lane.
 - hazard_type: use none when hazard_present is false.
 - hazard_type: use obstacle when a traffic cone is blocking, narrowing, or placed in the likely driving path.
 - traffic_signal_present: true only when a traffic signal is visibly present.
 - traffic_signal_red and traffic_signal_green: true only when that light state is clearly visible.
 - If traffic_signal_present is false, set traffic_signal_red and traffic_signal_green to false.
-- traffic_cone_reason, hazard_reason, and decision_reason must be brief and based only on visible evidence.
+- driving_action: use decelerate for red traffic signals or hazards; maintain_speed for clear or uncertain scenes; accelerate only when the forward path is clearly safe.
 """
 
 USER_PROMPT = (
@@ -453,18 +444,7 @@ def normalize_bool(value) -> bool:
     return False
 
 
-def sanitize_reason(value, fallback: str) -> str:
-    """Collapse whitespace and provide a predictable fallback reason."""
-    if isinstance(value, str):
-        cleaned = " ".join(value.strip().split())
-        if cleaned:
-            return cleaned
-    return fallback
-
-
 def determine_driving_action(
-    road_type: str,
-    road_surface: str,
     hazard_present: bool,
     hazard_type: str,
     traffic_signal_present: bool,
@@ -473,26 +453,15 @@ def determine_driving_action(
 ):
     """Derive the final vehicle action from the first scene judgments."""
     if traffic_signal_present and traffic_signal_red:
-        return "decelerate", "Red traffic signal is visible ahead."
+        return "decelerate"
 
     if hazard_present and hazard_type in {"obstacle", "pedestrian_intrusion_risk", "unknown"}:
-        return "decelerate", "Hazard detected ahead, so slowing down is safest."
-
-    if road_surface == "wet":
-        return "decelerate", "Road appears wet, so reducing speed is safer."
+        return "decelerate"
 
     if traffic_signal_present and traffic_signal_green:
-        if road_type == "highway":
-            return "accelerate", "Green signal is visible and the roadway appears clear."
-        return "maintain_speed", "Green signal is visible, so continuing smoothly is appropriate."
+        return "maintain_speed"
 
-    if road_type == "highway":
-        return "accelerate", "Highway scene appears clear and dry."
-
-    if road_type == "city":
-        return "maintain_speed", "City-road scene is clearer but still calls for steady speed."
-
-    return "maintain_speed", "Scene certainty is limited, so maintaining speed is safer."
+    return "maintain_speed"
 
 
 def parse_analysis_response(response_text: str) -> dict:
@@ -501,69 +470,55 @@ def parse_analysis_response(response_text: str) -> dict:
 
     scene_context = normalize_enum(parsed.get("scene_context"), SCENE_CONTEXTS, default="simple")
     traffic_cone_present = normalize_bool(parsed.get("traffic_cone_present"))
-    road_type = normalize_enum(parsed.get("road_type"), ROAD_TYPES)
-    road_surface = normalize_enum(parsed.get("road_surface"), ROAD_SURFACES)
     hazard_present = normalize_bool(parsed.get("hazard_present"))
     hazard_type = normalize_enum(parsed.get("hazard_type"), HAZARD_TYPES)
     traffic_signal_present = normalize_bool(parsed.get("traffic_signal_present"))
     traffic_signal_red = normalize_bool(parsed.get("traffic_signal_red"))
     traffic_signal_green = normalize_bool(parsed.get("traffic_signal_green"))
+    model_driving_action = normalize_enum(
+        parsed.get("driving_action"),
+        DRIVING_ACTIONS,
+        default="unknown",
+    )
 
     if traffic_cone_present:
         scene_context = "complex"
-        traffic_cone_reason = sanitize_reason(
-            parsed.get("traffic_cone_reason"),
-            "Traffic-cone-shaped road marker is visible.",
-        )
-    else:
-        if scene_context == "complex":
-            traffic_cone_present = True
-            traffic_cone_reason = sanitize_reason(
-                parsed.get("traffic_cone_reason"),
-                "Traffic-cone-shaped road marker is visible.",
-            )
-        else:
-            traffic_cone_reason = "No traffic cone shape detected."
+    elif scene_context == "complex":
+        traffic_cone_present = True
 
     if not hazard_present:
         hazard_type = "none"
-        hazard_reason = "No forward hazard detected."
-    else:
-        if hazard_type == "none":
-            hazard_type = "unknown"
-        hazard_reason = sanitize_reason(
-            parsed.get("hazard_reason"),
-            "Potential forward hazard is visible.",
-        )
+    elif hazard_type == "none":
+        hazard_type = "unknown"
 
     if not traffic_signal_present:
         traffic_signal_red = False
         traffic_signal_green = False
 
-    driving_action, decision_reason = determine_driving_action(
-        road_type=road_type,
-        road_surface=road_surface,
+    rule_driving_action = determine_driving_action(
         hazard_present=hazard_present,
         hazard_type=hazard_type,
         traffic_signal_present=traffic_signal_present,
         traffic_signal_red=traffic_signal_red,
         traffic_signal_green=traffic_signal_green,
     )
+    driving_action = (
+        rule_driving_action
+        if rule_driving_action == "decelerate"
+        else model_driving_action
+    )
+    if driving_action not in DRIVING_ACTIONS:
+        driving_action = rule_driving_action
 
     return {
         "scene_context": scene_context,
         "traffic_cone_present": traffic_cone_present,
-        "traffic_cone_reason": traffic_cone_reason,
-        "road_type": road_type,
-        "road_surface": road_surface,
         "hazard_present": hazard_present,
         "hazard_type": hazard_type,
-        "hazard_reason": hazard_reason,
         "traffic_signal_present": traffic_signal_present,
         "traffic_signal_red": traffic_signal_red,
         "traffic_signal_green": traffic_signal_green,
         "driving_action": driving_action,
-        "decision_reason": decision_reason,
     }
 
 
@@ -615,13 +570,10 @@ def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
         f"Frame: {frame_count}",
         f"Context: {analysis_result['scene_context']}",
         f"Cone: {cone_label}",
-        f"Road: {analysis_result['road_type']}",
-        f"Surface: {analysis_result['road_surface']}",
         f"Hazard: {hazard_label}",
         f"Signal: {signal_label}",
         f"Action: {analysis_result['driving_action']}",
     ]
-    lines.extend(wrap_text(f"Why: {analysis_result['decision_reason']}", 55)[:2])
     return lines
 
 

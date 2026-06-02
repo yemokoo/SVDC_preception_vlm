@@ -130,17 +130,12 @@ The published message is a JSON string like this:
 {
   "scene_context": "simple",
   "traffic_cone_present": false,
-  "traffic_cone_reason": "No traffic cone shape detected.",
-  "road_type": "unknown",
-  "road_surface": "unknown",
   "hazard_present": false,
   "hazard_type": "none",
-  "hazard_reason": "No forward hazard detected.",
   "traffic_signal_present": false,
   "traffic_signal_red": false,
   "traffic_signal_green": false,
-  "driving_action": "maintain_speed",
-  "decision_reason": "Scene certainty is limited, so maintaining speed is safer."
+  "driving_action": "maintain_speed"
 }
 ```
 
