@@ -129,7 +129,6 @@ The published message is a JSON string like this:
 ```json
 {
   "scene_context": "simple",
-  "traffic_cone_present": false,
   "hazard_present": false,
   "hazard_type": "none",
   "traffic_signal_present": false,
@@ -139,12 +138,16 @@ The published message is a JSON string like this:
 }
 ```
 
-Scene context and traffic-cone detection are also published separately:
+Scene context is also published separately:
 
 ```text
 /scene_context
 /traffic_cone/present
 ```
+
+`/traffic_cone/present` is kept for compatibility. It is true only when the
+close-cone condition triggers `scene_context=complex`, not when a cone is merely
+visible farther away.
 
 ### Input topic
 
