@@ -137,13 +137,18 @@ Required JSON schema:
 
 Decision rules:
 - scene_context is a driving-mode command, not a general scene description.
+- Be conservative: default scene_context to simple unless the close-cone trigger
+  is visually obvious.
 - Use complex only when a traffic cone, road cone, construction cone, pylon cone,
   or rubber cone shape is in the vehicle's likely path and appears physically
-  very close to the ego vehicle, approximately within 1 meter.
-- If a cone-like road marker is visible but appears farther than about 1 meter
-  from the ego vehicle, keep scene_context simple.
-- If distance cannot be estimated but the cone does not clearly appear extremely
-  close to the front of the vehicle, keep scene_context simple.
+  within about 1 meter of the ego vehicle.
+- Treat the cone as within about 1 meter only when it looks immediately in front
+  of the camera/vehicle, typically large in the image, near the lower center or
+  lower driving path, and close enough that the vehicle should switch mode now.
+- If a cone-like road marker is merely visible ahead, small, far down the lane,
+  off to the side, or not clearly blocking the immediate vehicle path, keep
+  scene_context simple.
+- If distance cannot be estimated with high confidence, keep scene_context simple.
 - Use unknown only when the image is too unclear to judge the required fields.
 - Do not output whether a cone is merely visible. Cone visibility is not a field.
   Cone-like road markers only matter when they are close enough to trigger
@@ -162,7 +167,9 @@ Decision rules:
 
 USER_PROMPT = (
     "Analyze this driving scene, pay special attention to cone-shaped road markers "
-    "that are approximately within 1 meter of the ego vehicle, "
+    "only when they are clearly within about 1 meter of the ego vehicle and "
+    "immediately in the vehicle path, "
+    "keep scene_context simple for cones that are only visible ahead or uncertain, "
     "do not report cone visibility as a separate field, "
     "and respond with the required JSON object only."
 )

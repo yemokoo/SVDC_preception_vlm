@@ -146,8 +146,9 @@ Scene context is also published separately:
 ```
 
 `/traffic_cone/present` is kept for compatibility. It is true only when the
-close-cone condition triggers `scene_context=complex`, not when a cone is merely
-visible farther away.
+close-cone condition triggers `scene_context=complex`. A cone merely visible
+ahead, off to the side, far down the lane, or with uncertain distance remains
+`scene_context=simple`.
 
 ### Input topic
 
