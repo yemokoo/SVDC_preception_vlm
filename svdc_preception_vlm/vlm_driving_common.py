@@ -129,7 +129,6 @@ Required JSON schema:
   "scene_context": "simple | complex | unknown",
   "hazard_present": true,
   "hazard_type": "none | obstacle | pedestrian_intrusion_risk | unknown",
-  "traffic_signal_present": true,
   "traffic_signal_red": false,
   "traffic_signal_green": false,
   "driving_action": "accelerate | maintain_speed | decelerate"
@@ -137,18 +136,21 @@ Required JSON schema:
 
 Decision rules:
 - scene_context is a driving-mode command, not a general scene description.
-- Be conservative: default scene_context to simple unless the close-cone trigger
-  is visually obvious.
+- Default scene_context to simple for distant or irrelevant cones, but allow
+  complex when a cone is clearly near enough that the vehicle should prepare to
+  switch mode soon.
 - Use complex only when a traffic cone, road cone, construction cone, pylon cone,
   or rubber cone shape is in the vehicle's likely path and appears physically
-  within about 1 meter of the ego vehicle.
-- Treat the cone as within about 1 meter only when it looks immediately in front
-  of the camera/vehicle, typically large in the image, near the lower center or
-  lower driving path, and close enough that the vehicle should switch mode now.
-- If a cone-like road marker is merely visible ahead, small, far down the lane,
-  off to the side, or not clearly blocking the immediate vehicle path, keep
+  close to the ego vehicle, roughly within 1 to 2 meters or close enough to affect
+  the next driving decision.
+- Treat the cone as close enough for complex when it is in the forward driving
+  path, noticeably large or mid-to-lower in the image, and the vehicle would soon
+  need to slow, steer, or switch mode if it keeps moving forward.
+- If a cone-like road marker is only barely visible, far down the lane, clearly
+  off to the side, or not relevant to the vehicle's immediate path, keep
   scene_context simple.
-- If distance cannot be estimated with high confidence, keep scene_context simple.
+- If distance is uncertain but the cone appears near the forward path and could
+  affect the next few meters of driving, prefer scene_context complex.
 - Use unknown only when the image is too unclear to judge the required fields.
 - Do not output whether a cone is merely visible. Cone visibility is not a field.
   Cone-like road markers only matter when they are close enough to trigger
@@ -159,17 +161,25 @@ Decision rules:
 - hazard_present: true only when there is a forward hazard such as an obstacle, traffic cone blocking or narrowing the lane, or a person likely to enter the lane.
 - hazard_type: use none when hazard_present is false.
 - hazard_type: use obstacle when a traffic cone is blocking, narrowing, or placed in the likely driving path.
-- traffic_signal_present: true only when a traffic signal is visibly present.
-- traffic_signal_red and traffic_signal_green: true only when that light state is clearly visible.
-- If traffic_signal_present is false, set traffic_signal_red and traffic_signal_green to false.
+- Traffic signals may be small experimental signals placed low near the road,
+  about 70 cm tall, not only full-size overhead or roadside traffic lights.
+  Judge by the signal-light structure and illuminated lamp, not by mounting height.
+- traffic_signal_red and traffic_signal_green: true only when that light state is
+  clearly visible as an illuminated red or green lamp. Do not infer red or green
+  from housing color, reflections, labels, or unlit lenses.
+- If both red and green appear visible, set true only for the lamp that is clearly
+  illuminated. If the active lamp color is ambiguous, keep both false while
+  continuing to publish the required JSON keys.
+- Do not output a separate traffic signal presence field. Only output the red and
+  green signal-state fields.
 - driving_action: use decelerate for red traffic signals or hazards; maintain_speed for clear or uncertain scenes; accelerate only when the forward path is clearly safe.
 """
 
 USER_PROMPT = (
     "Analyze this driving scene, pay special attention to cone-shaped road markers "
-    "only when they are clearly within about 1 meter of the ego vehicle and "
-    "immediately in the vehicle path, "
-    "keep scene_context simple for cones that are only visible ahead or uncertain, "
+    "when they are close to the ego vehicle path, roughly within 1 to 2 meters "
+    "or near enough to affect the next driving decision, "
+    "keep scene_context simple for cones that are only far ahead or clearly off-path, "
     "do not report cone visibility as a separate field, "
     "and respond with the required JSON object only."
 )
@@ -270,7 +280,10 @@ class DrivingDecisionPublisher(Node):
         self.traffic_cone_present_publisher.publish(cone_present_message)
 
         signal_present_message = Bool()
-        signal_present_message.data = analysis_result["traffic_signal_present"]
+        signal_present_message.data = (
+            analysis_result["traffic_signal_red"]
+            or analysis_result["traffic_signal_green"]
+        )
         self.signal_present_publisher.publish(signal_present_message)
 
         signal_red_message = Bool()
@@ -462,18 +475,17 @@ def normalize_bool(value) -> bool:
 def determine_driving_action(
     hazard_present: bool,
     hazard_type: str,
-    traffic_signal_present: bool,
     traffic_signal_red: bool,
     traffic_signal_green: bool,
 ):
     """Derive the final vehicle action from the first scene judgments."""
-    if traffic_signal_present and traffic_signal_red:
+    if traffic_signal_red:
         return "decelerate"
 
     if hazard_present and hazard_type in {"obstacle", "pedestrian_intrusion_risk", "unknown"}:
         return "decelerate"
 
-    if traffic_signal_present and traffic_signal_green:
+    if traffic_signal_green:
         return "maintain_speed"
 
     return "maintain_speed"
@@ -486,7 +498,6 @@ def parse_analysis_response(response_text: str) -> dict:
     scene_context = normalize_enum(parsed.get("scene_context"), SCENE_CONTEXTS, default="simple")
     hazard_present = normalize_bool(parsed.get("hazard_present"))
     hazard_type = normalize_enum(parsed.get("hazard_type"), HAZARD_TYPES)
-    traffic_signal_present = normalize_bool(parsed.get("traffic_signal_present"))
     traffic_signal_red = normalize_bool(parsed.get("traffic_signal_red"))
     traffic_signal_green = normalize_bool(parsed.get("traffic_signal_green"))
     model_driving_action = normalize_enum(
@@ -500,14 +511,9 @@ def parse_analysis_response(response_text: str) -> dict:
     elif hazard_type == "none":
         hazard_type = "unknown"
 
-    if not traffic_signal_present:
-        traffic_signal_red = False
-        traffic_signal_green = False
-
     rule_driving_action = determine_driving_action(
         hazard_present=hazard_present,
         hazard_type=hazard_type,
-        traffic_signal_present=traffic_signal_present,
         traffic_signal_red=traffic_signal_red,
         traffic_signal_green=traffic_signal_green,
     )
@@ -523,7 +529,6 @@ def parse_analysis_response(response_text: str) -> dict:
         "scene_context": scene_context,
         "hazard_present": hazard_present,
         "hazard_type": hazard_type,
-        "traffic_signal_present": traffic_signal_present,
         "traffic_signal_red": traffic_signal_red,
         "traffic_signal_green": traffic_signal_green,
         "driving_action": driving_action,
@@ -566,13 +571,10 @@ def build_overlay_lines(frame_count: int, analysis_result: dict) -> list[str]:
     """Build compact overlay lines from the normalized JSON result."""
     hazard_label = analysis_result["hazard_type"] if analysis_result["hazard_present"] else "none"
     signal_label = "none"
-    if analysis_result["traffic_signal_present"]:
-        if analysis_result["traffic_signal_red"]:
-            signal_label = "red"
-        elif analysis_result["traffic_signal_green"]:
-            signal_label = "green"
-        else:
-            signal_label = "present"
+    if analysis_result["traffic_signal_red"]:
+        signal_label = "red"
+    elif analysis_result["traffic_signal_green"]:
+        signal_label = "green"
     lines = [
         f"Frame: {frame_count}",
         f"Context: {analysis_result['scene_context']}",

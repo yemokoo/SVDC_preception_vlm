@@ -131,12 +131,15 @@ The published message is a JSON string like this:
   "scene_context": "simple",
   "hazard_present": false,
   "hazard_type": "none",
-  "traffic_signal_present": false,
   "traffic_signal_red": false,
   "traffic_signal_green": false,
   "driving_action": "maintain_speed"
 }
 ```
+
+Traffic-signal detection accepts small experimental signals placed low near the
+road, not only full-size road signals. Red/green flags are true only when the
+illuminated lamp color is clearly visible.
 
 Scene context is also published separately:
 
@@ -146,9 +149,10 @@ Scene context is also published separately:
 ```
 
 `/traffic_cone/present` is kept for compatibility. It is true only when the
-close-cone condition triggers `scene_context=complex`. A cone merely visible
-ahead, off to the side, far down the lane, or with uncertain distance remains
-`scene_context=simple`.
+close-cone condition triggers `scene_context=complex`. A cone that is near the
+forward path and close enough to affect the next driving decision should trigger
+`complex`, even if the exact distance is uncertain. A cone merely visible far
+ahead or clearly off to the side remains `scene_context=simple`.
 
 ### Input topic
 
